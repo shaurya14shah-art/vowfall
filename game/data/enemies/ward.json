@@ -1,0 +1,24 @@
+{
+  "id": "ward",
+  "name": "Ward of the Court",
+  "model": "res://assets/models/figures/ward.glb",
+  "hp": 40,
+  "poise": 30,
+  "speed": 0.7,
+  "moveset": "res://data/instruments/placeholder_clerk.json",
+  "ai": {
+    "near": 2.0,
+    "far": 3.4,
+    "wait": [
+      50,
+      110
+    ],
+    "heavy": 0.0,
+    "double": 0.4,
+    "guard_when_hit": 0.0
+  },
+  "laws": [],
+  "right": "res://assets/models/props/knife.glb",
+  "left": "",
+  "scale": 0.93
+}

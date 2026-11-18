@@ -1,0 +1,41 @@
+{
+  "_comment": "Recognition Trials: what a bearer must do with a law before its Instrument will wake. clause is the id of a clause of that law; COUNT counts the times it fires, SUM adds the amounts.",
+  "trials": {
+    "threshold.gatekeeper": {
+      "clause": "deny_crossing",
+      "measure": "COUNT",
+      "need": 5,
+      "text": "Have your line deny five crossings."
+    },
+    "threshold.divide": {
+      "clause": "sever",
+      "measure": "COUNT",
+      "need": 4,
+      "text": "Have the Divide refuse four acts."
+    },
+    "debt.creditor": {
+      "clause": "call_in",
+      "measure": "SUM",
+      "need": 40,
+      "text": "Call in forty of what you are owed."
+    },
+    "debt.debtor": {
+      "clause": "pay_forward",
+      "measure": "SUM",
+      "need": 30,
+      "text": "Pay thirty of your debt forward."
+    },
+    "reflection.twin": {
+      "clause": "copy",
+      "measure": "SUM",
+      "need": 30,
+      "text": "Have a twin suffer thirty for the other."
+    },
+    "reflection.answer": {
+      "clause": "return",
+      "measure": "COUNT",
+      "need": 3,
+      "text": "Return three blows to their authors."
+    }
+  }
+}

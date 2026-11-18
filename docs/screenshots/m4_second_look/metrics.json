@@ -1,0 +1,20 @@
+{
+  "avg_ms": 17.81,
+  "draw_calls": 222,
+  "frames": 292,
+  "median_ms": 16.66,
+  "p99_ms": 22.13,
+  "shots": [
+    "01_the_arbiter_arrives",
+    "02_writ_of_standing_spoken",
+    "03_the_stamp_winds_up",
+    "04_the_stamp_lands",
+    "05_the_seal_it_left",
+    "06_struck_from_behind_denied",
+    "07_cross_examination_two_writs",
+    "08_the_hearing_spoken",
+    "09_fighting_under_the_hearing",
+    "10_he_yields_and_offers",
+    "11_licensed"
+  ]
+}

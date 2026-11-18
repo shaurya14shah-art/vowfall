@@ -1,0 +1,9 @@
+{
+  "_comment": "PLACEHOLDER moveset for clerks and wards in M2: quick, light, short.",
+  "id": "enemy.clerk.placeholder",
+  "entry": {"light": "light_1", "heavy": "light_1"},
+  "moves": {
+    "light_1": {"act": "thrust", "anim": "1H_Melee_Attack_Stab",             "anim_hit": 0.42, "startup": 18, "active": 3, "recovery": 22, "cancel_hit": 26, "cancel_whiff": 30, "damage": 5, "poise": 6, "reach": 215, "arc": 60,  "lunge": 130, "stun": 10, "hitstop": 3, "gain": 0, "next": {"light": "light_2"}},
+    "light_2": {"act": "light",  "anim": "1H_Melee_Attack_Slice_Horizontal", "anim_hit": 0.28, "startup": 13, "active": 3, "recovery": 26, "cancel_hit": 42, "cancel_whiff": 42, "damage": 5, "poise": 6, "reach": 215, "arc": 100, "lunge": 90,  "stun": 10, "hitstop": 3, "gain": 0, "next": {}}
+  }
+}

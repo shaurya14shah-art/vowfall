@@ -1,0 +1,105 @@
+{
+  "laws": [
+    {
+      "id": "debt.creditor",
+      "version": 1,
+      "root": "DEBT",
+      "name": "The Creditor",
+      "thesis": "Every harm is a loan.",
+      "text": "Harm you take from an enemy you can see is recorded against them. Call it in with a strike and they pay all of it back at once. A blow from behind is not witnessed and is not owed.",
+      "operation": "DEFER",
+      "tier": "TECHNIQUE",
+      "scope": {"shape": "SELF"},
+      "term": {"ticks": 900},
+      "price": {"resonance": 20},
+      "breach": [],
+      "counterplay": ["STRIKE_UNWITNESSED", "STARVE", "OUTLAST"],
+      "inscribe": {"tag": "call_in", "cost": 5, "label": "call in"},
+      "clauses": [
+        {
+          "id": "lend",
+          "on": ["HARM"], "stage": "REACT", "op": "DEFER",
+          "params": {"mode": "COPY", "pct": 100, "to": "SOURCE", "emit": "HARM", "release": "INVOKE", "lapse_ticks": 900, "tag": "owed"},
+          "where": {"target": {"rel": "OWNER"}, "source": {"rel": "HOSTILE"}, "tags": {"none": ["from_behind"]}},
+          "reason": "a witnessed harm is recorded as a loan"
+        },
+        {
+          "id": "catch",
+          "on": ["HARM"], "stage": "REACT", "op": "DEFER",
+          "params": {"mode": "COPY", "basis": "BLOCKED", "pct": 100, "to": "SOURCE", "emit": "HARM", "release": "INVOKE", "lapse_ticks": 900, "tag": "owed"},
+          "where": {"target": {"rel": "OWNER"}, "source": {"rel": "HOSTILE"}, "tags": {"all": ["guarded"]}},
+          "reason": "what the guard caught is owed in full"
+        },
+        {
+          "id": "call_in",
+          "on": ["STRIKE"], "stage": "MODIFY", "op": "TRANSFER",
+          "params": {"mode": "HELD_TO_EVENT", "of": "TARGET"},
+          "where": {"source": {"rel": "OWNER"}, "tags": {"all": ["call_in"]}, "held": {"of": "TARGET", "min": 1}},
+          "reason": "the debt is called in"
+        }
+      ],
+      "unveiled": {
+        "text": "As before, and a debtor's hand is garnished: anyone who owes you strikes you for a quarter less.",
+        "add_clauses": [
+          {
+            "id": "garnish",
+            "on": ["STRIKE"], "stage": "MODIFY", "op": "ALTER",
+            "params": {"amount_pct": 75},
+            "where": {"source": {"rel": "HOSTILE"}, "target": {"rel": "OWNER"}, "held": {"of": "SOURCE", "min": 1}},
+            "reason": "a debtor's hand is garnished"
+          }
+        ]
+      }
+    },
+    {
+      "id": "debt.debtor",
+      "version": 1,
+      "root": "DEBT",
+      "name": "The Debtor",
+      "thesis": "What I owe, I choose when to pay.",
+      "text": "Harm you take is not suffered now. It is owed, and comes due in eight seconds with a quarter more. Land a strike and you pay that much of it forward onto whoever you hit. Owe more than sixty and you default: all of it comes due at once, and half again.",
+      "operation": "DEFER",
+      "tier": "TECHNIQUE",
+      "scope": {"shape": "SELF"},
+      "term": {"ticks": 900},
+      "price": {"resonance": 25},
+      "breach": [{"type": "DEFAULT", "cap": 60, "pct": 150}],
+      "counterplay": ["FORCE_DEFAULT", "OUTLAST", "DENY_STRIKES"],
+      "clauses": [
+        {
+          "id": "defer",
+          "on": ["HARM"], "stage": "HOLD", "op": "DEFER",
+          "params": {"mode": "MOVE", "pct": 100, "emit": "HARM", "release": "DUE", "due_ticks": 480, "interest_pct": 25, "tag": "debt_due"},
+          "where": {"target": {"rel": "OWNER"}, "tags": {"none": ["debt_due"]}},
+          "reason": "the harm is owed, not yet paid"
+        },
+        {
+          "id": "pay_forward",
+          "on": ["HARM"], "stage": "REACT", "op": "TRANSFER",
+          "params": {"mode": "HELD_TO_TARGET", "of": "OWNER", "pct": 100, "tag": "paid_forward"},
+          "where": {"source": {"rel": "OWNER"}, "target": {"rel": "HOSTILE"}, "tags": {"all": ["by_hand"], "none": ["paid_forward"]}, "held": {"of": "OWNER", "min": 1}},
+          "reason": "the debt is paid forward"
+        }
+      ],
+      "unveiled": {
+        "text": "As before, and what you pay forward lands with the interest you would have suffered: a quarter more.",
+        "clauses": [
+          {
+            "id": "defer",
+            "on": ["HARM"], "stage": "HOLD", "op": "DEFER",
+            "params": {"mode": "MOVE", "pct": 100, "emit": "HARM", "release": "DUE", "due_ticks": 480, "interest_pct": 25, "tag": "debt_due"},
+            "where": {"target": {"rel": "OWNER"}, "tags": {"none": ["debt_due"]}},
+            "reason": "the harm is owed, not yet paid"
+          },
+          {
+            "id": "pay_forward",
+            "on": ["HARM"], "stage": "REACT", "op": "TRANSFER",
+            "params": {"mode": "HELD_TO_TARGET", "of": "OWNER", "pct": 125, "tag": "paid_forward"},
+            "where": {"source": {"rel": "OWNER"}, "target": {"rel": "HOSTILE"}, "tags": {"all": ["by_hand"], "none": ["paid_forward"]}, "held": {"of": "OWNER", "min": 1}},
+            "reason": "the debt is paid forward, with interest"
+          }
+        ]
+      }
+    }
+  ]
+}

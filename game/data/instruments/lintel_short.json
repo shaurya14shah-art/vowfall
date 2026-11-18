@@ -1,0 +1,12 @@
+{
+  "_comment": "The Lintel's short half: what its bearer fights with while the stave is planted on a line. Quick and close. Ticks are 60 Hz. reach and lunge in centimetres; arc in degrees (full width). anim_hit is the second in the clip at which the blow connects (tools/measure_clips.gd); the clip is sped up so that moment lands on the last startup tick. Motion clips are borrowed (see assets/models/LICENSES.md).",
+  "id": "lintel_short",
+  "idle": "Idle",
+  "guard_chip_pct": 30,
+  "entry": {"light": "light_1", "heavy": "heavy_1"},
+  "moves": {
+    "light_1": {"act": "light", "anim": "1H_Melee_Attack_Slice_Horizontal", "anim_hit": 0.28, "startup": 8, "active": 3, "recovery": 12, "cancel_hit": 12, "cancel_whiff": 18, "damage": 8, "poise": 10, "reach": 210, "arc": 110, "lunge": 60, "stun": 12, "hitstop": 3, "gain": 4, "next": {"light": "light_2", "heavy": "heavy_1"}},
+    "light_2": {"act": "reverse", "anim": "1H_Melee_Attack_Slice_Diagonal", "anim_hit": 0.42, "startup": 9, "active": 3, "recovery": 14, "cancel_hit": 13, "cancel_whiff": 20, "damage": 8, "poise": 10, "reach": 210, "arc": 110, "lunge": 60, "stun": 12, "hitstop": 3, "gain": 4, "next": {"heavy": "heavy_1"}},
+    "heavy_1": {"act": "thrust", "anim": "1H_Melee_Attack_Stab", "anim_hit": 0.42, "startup": 13, "active": 3, "recovery": 20, "cancel_hit": 18, "cancel_whiff": 30, "damage": 14, "poise": 18, "reach": 250, "arc": 40, "lunge": 90, "stun": 18, "hitstop": 5, "gain": 6, "next": {}}
+  }
+}

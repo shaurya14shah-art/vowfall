@@ -1,0 +1,19 @@
+# Godot
+game/.godot/
+*.translation
+export_presets.cfg
+# macOS
+.DS_Store
+# Builds and captures
+builds/
+*.tmp
+.env
+.env.*
+!.env.example
+node_modules/
+venv/
+.venv/
+__pycache__/
+.DS_Store
+*.pem
+*.key

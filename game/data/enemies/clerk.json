@@ -1,0 +1,25 @@
+{
+  "_comment": "Many weak, quick hits. Feeds a Creditor; pushes a Debtor toward default.",
+  "id": "clerk",
+  "name": "Court Clerk",
+  "model": "res://assets/models/figures/clerk.glb",
+  "hp": 22,
+  "poise": 20,
+  "speed": 0.78,
+  "moveset": "res://data/instruments/placeholder_clerk.json",
+  "ai": {
+    "near": 1.9,
+    "far": 3.2,
+    "wait": [
+      25,
+      70
+    ],
+    "heavy": 0.0,
+    "double": 0.5,
+    "guard_when_hit": 0.0
+  },
+  "laws": [],
+  "right": "res://assets/models/props/stylus.glb",
+  "left": "res://assets/models/props/ledger.glb",
+  "scale": 0.97
+}

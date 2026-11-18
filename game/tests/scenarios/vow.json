@@ -1,0 +1,867 @@
+{
+ "cast": {
+  "P": {
+   "id": 1,
+   "name": "Player",
+   "team": 1,
+   "tags": [
+    "person"
+   ],
+   "pos": [
+    0,
+    0
+   ]
+  },
+  "E": {
+   "id": 2,
+   "name": "Bailiff",
+   "team": 2,
+   "tags": [
+    "person"
+   ],
+   "pos": [
+    0,
+    400
+   ]
+  },
+  "E2": {
+   "id": 3,
+   "name": "Ward",
+   "team": 2,
+   "tags": [
+    "person"
+   ],
+   "pos": [
+    300,
+    400
+   ]
+  },
+  "V": {
+   "id": 2,
+   "name": "Aurel Voss",
+   "team": 2,
+   "tags": [
+    "person",
+    "sovereign"
+   ],
+   "hp": 400,
+   "pos": [
+    0,
+    400
+   ]
+  }
+ },
+ "scenarios": [
+  {
+   "name": "VOW: sworn, it costs nothing and stands with no term",
+   "entities": [
+    "P",
+    "E"
+   ],
+   "steps": [
+    {
+     "do": "impose",
+     "owner": 1,
+     "def": "vow.watched_back",
+     "expect": {
+      "verdict": "APPLIED"
+     }
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "resonance",
+     "eq": 100
+    },
+    {
+     "do": "advance",
+     "ticks": 3000
+    },
+    {
+     "do": "assert_law",
+     "owner": 1,
+     "def": "vow.watched_back",
+     "active": true
+    },
+    {
+     "do": "strike",
+     "source": 2,
+     "target": 1,
+     "amount": 10,
+     "tags": [
+      "from_front"
+     ]
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "hp",
+     "eq": 90
+    },
+    {
+     "do": "assert_law",
+     "owner": 1,
+     "def": "vow.watched_back",
+     "active": true
+    }
+   ]
+  },
+  {
+   "name": "VOW FALLS: struck from behind, the forfeit is paid on the spot",
+   "entities": [
+    "P",
+    "E"
+   ],
+   "steps": [
+    {
+     "do": "impose",
+     "owner": 1,
+     "def": "vow.watched_back"
+    },
+    {
+     "do": "strike",
+     "source": 2,
+     "target": 1,
+     "amount": 10,
+     "tags": [
+      "from_behind"
+     ],
+     "expect": {
+      "verdict": "APPLIED",
+      "outcomes": [
+       {
+        "type": "BREACH",
+        "law": "vow.watched_back"
+       }
+      ]
+     }
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "hp",
+     "eq": 75
+    },
+    {
+     "do": "assert_law",
+     "owner": 1,
+     "def": "vow.watched_back",
+     "active": false
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "standing",
+     "eq": 0
+    },
+    {
+     "do": "strike",
+     "source": 2,
+     "target": 1,
+     "amount": 10,
+     "tags": [
+      "from_behind"
+     ]
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "hp",
+     "eq": 65
+    }
+   ]
+  },
+  {
+   "name": "VOW KEPT: Resonance is made whole and the word gains weight",
+   "entities": [
+    {
+     "use": "P",
+     "resonance": 40
+    },
+    "E"
+   ],
+   "steps": [
+    {
+     "do": "impose",
+     "owner": 1,
+     "def": "vow.watched_back"
+    },
+    {
+     "do": "keep",
+     "owner": 1,
+     "expect": {
+      "verdict": "APPLIED",
+      "outcomes": [
+       {
+        "type": "KEPT",
+        "law": "vow.watched_back"
+       }
+      ]
+     }
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "resonance",
+     "eq": 100
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "standing",
+     "eq": 2
+    },
+    {
+     "do": "assert_law",
+     "owner": 1,
+     "def": "vow.watched_back",
+     "active": false
+    },
+    {
+     "do": "keep",
+     "owner": 1,
+     "expect": {
+      "verdict": "REJECTED"
+     }
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "standing",
+     "eq": 2
+    }
+   ]
+  },
+  {
+   "name": "VOW: a blow that does no harm breaks nothing",
+   "entities": [
+    "P",
+    "E"
+   ],
+   "steps": [
+    {
+     "do": "impose",
+     "owner": 1,
+     "def": "vow.unmarked"
+    },
+    {
+     "do": "strike",
+     "source": 2,
+     "target": 1,
+     "amount": 0,
+     "tags": [
+      "from_front",
+      "guarded",
+      "perfect_parry"
+     ],
+     "data": {
+      "weight": 12
+     }
+    },
+    {
+     "do": "assert_law",
+     "owner": 1,
+     "def": "vow.unmarked",
+     "active": true
+    },
+    {
+     "do": "strike",
+     "source": 2,
+     "target": 1,
+     "amount": 3,
+     "tags": [
+      "from_front",
+      "guarded"
+     ],
+     "data": {
+      "weight": 12
+     },
+     "expect": {
+      "outcomes": [
+       {
+        "type": "BREACH",
+        "law": "vow.unmarked"
+       }
+      ]
+     }
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "hp",
+     "eq": 72
+    },
+    {
+     "do": "assert_law",
+     "owner": 1,
+     "def": "vow.unmarked",
+     "active": false
+    }
+   ]
+  },
+  {
+   "name": "VOW: the same strike twice running; one swing reaching two is one strike",
+   "entities": [
+    "P",
+    "E",
+    "E2"
+   ],
+   "steps": [
+    {
+     "do": "impose",
+     "owner": 1,
+     "def": "vow.varied_hand"
+    },
+    {
+     "do": "strike",
+     "source": 1,
+     "target": 2,
+     "amount": 10,
+     "tags": [
+      "by_hand"
+     ],
+     "data": {
+      "act": "light_1",
+      "swing": 1
+     }
+    },
+    {
+     "do": "strike",
+     "source": 1,
+     "target": 3,
+     "amount": 10,
+     "tags": [
+      "by_hand"
+     ],
+     "data": {
+      "act": "light_1",
+      "swing": 1
+     }
+    },
+    {
+     "do": "assert_law",
+     "owner": 1,
+     "def": "vow.varied_hand",
+     "active": true
+    },
+    {
+     "do": "strike",
+     "source": 1,
+     "target": 2,
+     "amount": 10,
+     "tags": [
+      "by_hand"
+     ],
+     "data": {
+      "act": "light_2",
+      "swing": 2
+     }
+    },
+    {
+     "do": "assert_law",
+     "owner": 1,
+     "def": "vow.varied_hand",
+     "active": true
+    },
+    {
+     "do": "strike",
+     "source": 1,
+     "target": 2,
+     "amount": 10,
+     "tags": [
+      "by_hand"
+     ],
+     "data": {
+      "act": "light_2",
+      "swing": 3
+     },
+     "expect": {
+      "outcomes": [
+       {
+        "type": "BREACH",
+        "law": "vow.varied_hand"
+       }
+      ]
+     }
+    },
+    {
+     "do": "assert",
+     "entity": 2,
+     "stat": "hp",
+     "eq": 70
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "hp",
+     "eq": 80
+    },
+    {
+     "do": "assert_law",
+     "owner": 1,
+     "def": "vow.varied_hand",
+     "active": false
+    }
+   ]
+  },
+  {
+   "name": "VOW AND EDICT: a repeat The Hearing denies was never made, so the vow stands",
+   "entities": [
+    "P",
+    "V"
+   ],
+   "steps": [
+    {
+     "do": "impose",
+     "owner": 1,
+     "def": "vow.varied_hand"
+    },
+    {
+     "do": "impose",
+     "owner": 2,
+     "def": "voss.the_hearing"
+    },
+    {
+     "do": "strike",
+     "source": 1,
+     "target": 2,
+     "amount": 10,
+     "tags": [
+      "by_hand",
+      "from_front"
+     ],
+     "data": {
+      "act": "light_1",
+      "swing": 1
+     }
+    },
+    {
+     "do": "strike",
+     "source": 1,
+     "target": 2,
+     "amount": 10,
+     "tags": [
+      "by_hand",
+      "from_front"
+     ],
+     "data": {
+      "act": "light_1",
+      "swing": 2
+     },
+     "expect": {
+      "verdict": "REJECTED",
+      "outcomes": [
+       {
+        "type": "REJECTION",
+        "law": "voss.the_hearing"
+       }
+      ]
+     }
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "hp",
+     "eq": 90
+    },
+    {
+     "do": "assert_law",
+     "owner": 1,
+     "def": "vow.varied_hand",
+     "active": true
+    },
+    {
+     "do": "assert",
+     "entity": 2,
+     "stat": "hp",
+     "eq": 390
+    }
+   ]
+  },
+  {
+   "name": "VOW AND DEBT: a blow from behind that the Debtor defers has not struck yet; when it comes due it comes from no side",
+   "entities": [
+    "P",
+    "E"
+   ],
+   "steps": [
+    {
+     "do": "impose",
+     "owner": 1,
+     "def": "debt.debtor"
+    },
+    {
+     "do": "impose",
+     "owner": 1,
+     "def": "vow.watched_back"
+    },
+    {
+     "do": "strike",
+     "source": 2,
+     "target": 1,
+     "amount": 20,
+     "tags": [
+      "from_behind"
+     ]
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "hp",
+     "eq": 100
+    },
+    {
+     "do": "assert_law",
+     "owner": 1,
+     "def": "vow.watched_back",
+     "active": true
+    },
+    {
+     "do": "advance",
+     "ticks": 480
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "hp",
+     "eq": 75
+    },
+    {
+     "do": "assert_law",
+     "owner": 1,
+     "def": "vow.watched_back",
+     "active": true
+    }
+   ]
+  },
+  {
+   "name": "VOW: Bare Hands falls to a law imposed, and the law stands",
+   "entities": [
+    "P",
+    "E"
+   ],
+   "steps": [
+    {
+     "do": "impose",
+     "owner": 1,
+     "def": "vow.bare_hands"
+    },
+    {
+     "do": "impose",
+     "owner": 1,
+     "def": "threshold.gatekeeper",
+     "args": {
+      "line": [
+       -300,
+       200,
+       300,
+       200
+      ]
+     },
+     "expect": {
+      "verdict": "APPLIED",
+      "outcomes": [
+       {
+        "type": "BREACH",
+        "law": "vow.bare_hands"
+       }
+      ]
+     }
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "hp",
+     "eq": 80
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "resonance",
+     "eq": 70
+    },
+    {
+     "do": "assert_law",
+     "owner": 1,
+     "def": "vow.bare_hands",
+     "active": false
+    },
+    {
+     "do": "assert_law",
+     "owner": 1,
+     "def": "threshold.gatekeeper",
+     "active": true
+    }
+   ]
+  },
+  {
+   "name": "VOW AND WRIT: a law the Writ of Licence refuses was never imposed",
+   "entities": [
+    "P",
+    "V"
+   ],
+   "steps": [
+    {
+     "do": "impose",
+     "owner": 1,
+     "def": "vow.bare_hands"
+    },
+    {
+     "do": "impose",
+     "owner": 2,
+     "def": "voss.writ_of_licence"
+    },
+    {
+     "do": "impose",
+     "owner": 1,
+     "def": "threshold.gatekeeper",
+     "args": {
+      "line": [
+       -300,
+       200,
+       300,
+       200
+      ]
+     },
+     "expect": {
+      "verdict": "REJECTED"
+     }
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "hp",
+     "eq": 100
+    },
+    {
+     "do": "assert_law",
+     "owner": 1,
+     "def": "vow.bare_hands",
+     "active": true
+    },
+    {
+     "do": "impose",
+     "owner": 1,
+     "def": "vow.watched_back",
+     "expect": {
+      "verdict": "REJECTED"
+     }
+    },
+    {
+     "do": "assert_law",
+     "owner": 1,
+     "def": "vow.watched_back",
+     "active": false
+    }
+   ]
+  },
+  {
+   "name": "STANDING: a kept vow's weight wins a contest that would have been a draw",
+   "entities": [
+    "P",
+    "E",
+    "E2"
+   ],
+   "steps": [
+    {
+     "do": "impose",
+     "owner": 1,
+     "def": "vow.varied_hand"
+    },
+    {
+     "do": "keep",
+     "owner": 1
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "standing",
+     "eq": 3
+    },
+    {
+     "do": "impose",
+     "owner": 1,
+     "def": "threshold.gatekeeper",
+     "args": {
+      "line": [
+       -300,
+       200,
+       300,
+       200
+      ]
+     }
+    },
+    {
+     "do": "impose",
+     "owner": 2,
+     "def": "court.escort",
+     "args": {
+      "pair": [
+       2,
+       3
+      ]
+     }
+    },
+    {
+     "do": "strike",
+     "source": 2,
+     "target": 1,
+     "amount": 10,
+     "expect": {
+      "verdict": "REJECTED",
+      "outcomes": [
+       {
+        "type": "CONTEST",
+        "law": "threshold.gatekeeper",
+        "over": "court.escort"
+       }
+      ]
+     }
+    },
+    {
+     "do": "assert_law",
+     "owner": 2,
+     "def": "court.escort",
+     "active": false
+    },
+    {
+     "do": "assert_law",
+     "owner": 1,
+     "def": "threshold.gatekeeper",
+     "active": true
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "hp",
+     "eq": 100
+    }
+   ]
+  },
+  {
+   "name": "STANDING: capped at nine, lost when a vow falls, forgotten at rest",
+   "entities": [
+    {
+     "use": "P",
+     "standing": 8
+    },
+    "E"
+   ],
+   "steps": [
+    {
+     "do": "impose",
+     "owner": 1,
+     "def": "vow.unmarked"
+    },
+    {
+     "do": "keep",
+     "owner": 1
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "standing",
+     "eq": 9
+    },
+    {
+     "do": "impose",
+     "owner": 1,
+     "def": "vow.watched_back"
+    },
+    {
+     "do": "strike",
+     "source": 2,
+     "target": 1,
+     "amount": 10,
+     "tags": [
+      "from_behind"
+     ]
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "standing",
+     "eq": 0
+    },
+    {
+     "do": "impose",
+     "owner": 1,
+     "def": "vow.watched_back"
+    },
+    {
+     "do": "keep",
+     "owner": 1
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "standing",
+     "eq": 2
+    },
+    {
+     "do": "forget",
+     "entity": 1
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "standing",
+     "eq": 0
+    }
+   ]
+  },
+  {
+   "name": "VOW: it ends unkept when its author falls; and a forfeit is paid even if it is everything",
+   "entities": [
+    {
+     "use": "P",
+     "hp": 12
+    },
+    "E"
+   ],
+   "steps": [
+    {
+     "do": "impose",
+     "owner": 1,
+     "def": "vow.watched_back"
+    },
+    {
+     "do": "strike",
+     "source": 2,
+     "target": 1,
+     "amount": 5,
+     "tags": [
+      "from_behind"
+     ],
+     "expect": {
+      "outcomes": [
+       {
+        "type": "BREACH",
+        "law": "vow.watched_back"
+       }
+      ]
+     }
+    },
+    {
+     "do": "assert",
+     "entity": 1,
+     "stat": "hp",
+     "eq": 0
+    },
+    {
+     "do": "assert_law",
+     "owner": 1,
+     "def": "vow.watched_back",
+     "active": false
+    },
+    {
+     "do": "keep",
+     "owner": 1,
+     "expect": {
+      "verdict": "REJECTED"
+     }
+    }
+   ]
+  }
+ ]
+}

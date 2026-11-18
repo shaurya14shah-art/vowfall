@@ -1,0 +1,821 @@
+{
+  "_comment": "Each of these must be REFUSED by LawValidator with the named code. They are the powers the grammar exists to prevent.",
+  "base": {
+    "id": "test.base",
+    "version": 1,
+    "root": "THRESHOLD",
+    "name": "Base",
+    "thesis": "t",
+    "text": "t",
+    "operation": "DENY",
+    "tier": "TECHNIQUE",
+    "scope": {
+      "shape": "LINE",
+      "max_length": 600
+    },
+    "term": {
+      "ticks": 480,
+      "events": 3
+    },
+    "price": {
+      "resonance": 30
+    },
+    "breach": [],
+    "counterplay": [
+      "GO_AROUND",
+      "EXHAUST"
+    ],
+    "clauses": [
+      {
+        "on": [
+          "STRIKE"
+        ],
+        "stage": "DENY",
+        "op": "DENY",
+        "where": {
+          "source": {
+            "rel": "HOSTILE"
+          },
+          "path": "CROSSES"
+        },
+        "reason": "r"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "name": "the base itself is sound",
+      "expect": "",
+      "patch": {}
+    },
+    {
+      "name": "a law that never ends",
+      "expect": "E_TERM",
+      "patch": {
+        "term": {
+          "ticks": 0
+        }
+      }
+    },
+    {
+      "name": "a technique that outlasts its tier",
+      "expect": "E_TERM",
+      "patch": {
+        "term": {
+          "ticks": 5000
+        }
+      }
+    },
+    {
+      "name": "a free technique",
+      "expect": "E_PRICE",
+      "patch": {
+        "price": {
+          "resonance": 0
+        }
+      }
+    },
+    {
+      "name": "a law with no answer",
+      "expect": "E_COUNTERPLAY",
+      "patch": {
+        "counterplay": []
+      }
+    },
+    {
+      "name": "a law with one answer",
+      "expect": "E_COUNTERPLAY",
+      "patch": {
+        "counterplay": [
+          "EXHAUST"
+        ]
+      }
+    },
+    {
+      "name": "a root using an operation it does not own",
+      "expect": "E_ROOT_OP",
+      "patch": {
+        "clauses": [
+          {
+            "on": [
+              "HARM"
+            ],
+            "stage": "REACT",
+            "op": "DEFER",
+            "params": {
+              "mode": "COPY",
+              "pct": 100,
+              "to": "SOURCE",
+              "emit": "HARM",
+              "release": "INVOKE",
+              "lapse_ticks": 300,
+              "tag": "x"
+            },
+            "where": {
+              "target": {
+                "rel": "OWNER"
+              }
+            },
+            "reason": "r"
+          }
+        ]
+      }
+    },
+    {
+      "name": "a field that forbids every strike",
+      "expect": "E_TOTAL_LOCK",
+      "patch": {
+        "root": "PERMISSION",
+        "scope": {
+          "shape": "FIELD"
+        },
+        "price": {
+          "resonance": 60
+        },
+        "clauses": [
+          {
+            "on": [
+              "STRIKE"
+            ],
+            "stage": "DENY",
+            "op": "DENY",
+            "where": {
+              "source": {
+                "rel": "HOSTILE"
+              }
+            },
+            "reason": "r"
+          }
+        ]
+      }
+    },
+    {
+      "name": "refusing all harm to oneself without limit",
+      "expect": "E_IMMORTAL",
+      "patch": {
+        "root": "PERMISSION",
+        "scope": {
+          "shape": "SELF"
+        },
+        "term": {
+          "ticks": 600
+        },
+        "clauses": [
+          {
+            "on": [
+              "HARM"
+            ],
+            "stage": "DENY",
+            "op": "DENY",
+            "where": {
+              "target": {
+                "rel": "OWNER"
+              },
+              "tags": {
+                "all": [
+                  "by_hand"
+                ]
+              }
+            },
+            "reason": "r"
+          }
+        ]
+      }
+    },
+    {
+      "name": "deferring harm that can never default",
+      "expect": "E_IMMORTAL",
+      "patch": {
+        "root": "DEBT",
+        "operation": "DEFER",
+        "scope": {
+          "shape": "SELF"
+        },
+        "clauses": [
+          {
+            "on": [
+              "HARM"
+            ],
+            "stage": "HOLD",
+            "op": "DEFER",
+            "params": {
+              "mode": "MOVE",
+              "pct": 100,
+              "emit": "HARM",
+              "release": "DUE",
+              "due_ticks": 480,
+              "tag": "debt_due"
+            },
+            "where": {
+              "target": {
+                "rel": "OWNER"
+              },
+              "tags": {
+                "none": [
+                  "debt_due"
+                ]
+              }
+            },
+            "reason": "r"
+          }
+        ]
+      }
+    },
+    {
+      "name": "a debt with no day it ends",
+      "expect": "E_DEFER_RELEASE",
+      "patch": {
+        "root": "DEBT",
+        "operation": "DEFER",
+        "scope": {
+          "shape": "SELF"
+        },
+        "clauses": [
+          {
+            "on": [
+              "HARM"
+            ],
+            "stage": "REACT",
+            "op": "DEFER",
+            "params": {
+              "mode": "COPY",
+              "pct": 100,
+              "to": "SOURCE",
+              "emit": "HARM",
+              "release": "INVOKE",
+              "tag": "owed"
+            },
+            "where": {
+              "target": {
+                "rel": "OWNER"
+              }
+            },
+            "reason": "r"
+          }
+        ]
+      }
+    },
+    {
+      "name": "a copy that copies itself",
+      "expect": "E_LOOP",
+      "patch": {
+        "root": "REFLECTION",
+        "operation": "BIND",
+        "scope": {
+          "shape": "PAIR"
+        },
+        "clauses": [
+          {
+            "on": [
+              "HARM"
+            ],
+            "stage": "REACT",
+            "op": "TRANSFER",
+            "params": {
+              "mode": "COPY_TO_PAIR",
+              "pct": 100,
+              "tag": "copied"
+            },
+            "where": {
+              "pair": "TARGET_IN_PAIR"
+            },
+            "reason": "r"
+          }
+        ]
+      }
+    },
+    {
+      "name": "an inversion that inverts the returned",
+      "expect": "E_LOOP",
+      "patch": {
+        "root": "REFLECTION",
+        "operation": "INVERT",
+        "scope": {
+          "shape": "SELF"
+        },
+        "clauses": [
+          {
+            "on": [
+              "STRIKE"
+            ],
+            "stage": "REDIRECT",
+            "op": "INVERT",
+            "where": {
+              "target": {
+                "rel": "OWNER"
+              }
+            },
+            "reason": "r"
+          }
+        ]
+      }
+    },
+    {
+      "name": "an Edict that exempts its author",
+      "expect": "E_EDICT_EXEMPT",
+      "patch": {
+        "root": "PERMISSION",
+        "tier": "EDICT",
+        "scope": {
+          "shape": "FIELD"
+        },
+        "term": {
+          "ticks": 1800,
+          "events": 9
+        },
+        "price": {
+          "resonance": 60
+        },
+        "clauses": [
+          {
+            "on": [
+              "STRIKE"
+            ],
+            "stage": "DENY",
+            "op": "DENY",
+            "where": {
+              "source": {
+                "rel": "HOSTILE"
+              },
+              "tags": {
+                "all": [
+                  "by_hand"
+                ]
+              },
+              "same_act_as_last": true
+            },
+            "reason": "r"
+          }
+        ]
+      }
+    },
+    {
+      "name": "a Divide that takes a side",
+      "expect": "E_DIVIDE_SIDED",
+      "patch": {
+        "operation": "DIVIDE",
+        "clauses": [
+          {
+            "on": [
+              "STRIKE"
+            ],
+            "stage": "DENY",
+            "op": "DIVIDE",
+            "where": {
+              "source": {
+                "rel": "HOSTILE"
+              },
+              "path": "CROSSES"
+            },
+            "reason": "r"
+          }
+        ]
+      }
+    },
+    {
+      "name": "an operation at the wrong stage",
+      "expect": "E_STAGE_OP",
+      "patch": {
+        "clauses": [
+          {
+            "on": [
+              "STRIKE"
+            ],
+            "stage": "REACT",
+            "op": "DENY",
+            "where": {
+              "source": {
+                "rel": "HOSTILE"
+              },
+              "path": "CROSSES"
+            },
+            "reason": "r"
+          }
+        ]
+      }
+    },
+    {
+      "name": "broad, long and cheap all at once",
+      "expect": "E_BUDGET",
+      "patch": {
+        "root": "PERMISSION",
+        "scope": {
+          "shape": "FIELD"
+        },
+        "term": {
+          "ticks": 900
+        },
+        "price": {
+          "resonance": 10
+        },
+        "clauses": [
+          {
+            "on": [
+              "STRIKE"
+            ],
+            "stage": "DENY",
+            "op": "DENY",
+            "where": {
+              "tags": {
+                "all": [
+                  "by_hand"
+                ]
+              }
+            },
+            "reason": "r"
+          },
+          {
+            "on": [
+              "IMPOSE"
+            ],
+            "stage": "DENY",
+            "op": "DENY",
+            "where": {
+              "tags": {
+                "all": [
+                  "by_hand"
+                ]
+              }
+            },
+            "reason": "r"
+          }
+        ]
+      }
+    },
+    {
+      "name": "a clause that cannot state its reason",
+      "expect": "E_SHAPE",
+      "patch": {
+        "clauses": [
+          {
+            "on": [
+              "STRIKE"
+            ],
+            "stage": "DENY",
+            "op": "DENY",
+            "where": {
+              "path": "CROSSES"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "an operation that does not exist",
+      "expect": "E_SHAPE",
+      "patch": {
+        "clauses": [
+          {
+            "on": [
+              "STRIKE"
+            ],
+            "stage": "DENY",
+            "op": "ERASE",
+            "where": {
+              "path": "CROSSES"
+            },
+            "reason": "r"
+          }
+        ]
+      }
+    },
+    {
+      "name": "a sound vow: free, answerless, without clauses, and still a law",
+      "expect": "",
+      "patch": {
+        "root": "OWNERSHIP",
+        "operation": "BIND",
+        "tier": "VOW",
+        "scope": {
+          "shape": "SELF"
+        },
+        "term": {
+          "until": "KEPT",
+          "ticks": 0
+        },
+        "price": {
+          "resonance": 0
+        },
+        "forfeit": {
+          "harm": 15
+        },
+        "reward": {
+          "standing": 2
+        },
+        "breach": [
+          {
+            "type": "EVENT",
+            "on": [
+              "HARM"
+            ],
+            "where": {
+              "target": {
+                "rel": "OWNER"
+              }
+            },
+            "reason": "r"
+          }
+        ],
+        "counterplay": [],
+        "clauses": []
+      }
+    },
+    {
+      "name": "a vow that costs nothing to break",
+      "expect": "E_PRICE",
+      "patch": {
+        "root": "OWNERSHIP",
+        "operation": "BIND",
+        "tier": "VOW",
+        "scope": {
+          "shape": "SELF"
+        },
+        "term": {
+          "until": "KEPT",
+          "ticks": 0
+        },
+        "price": {
+          "resonance": 0
+        },
+        "forfeit": {
+          "harm": 0
+        },
+        "reward": {
+          "standing": 2
+        },
+        "breach": [
+          {
+            "type": "EVENT",
+            "on": [
+              "HARM"
+            ],
+            "where": {
+              "target": {
+                "rel": "OWNER"
+              }
+            },
+            "reason": "r"
+          }
+        ],
+        "counterplay": [],
+        "clauses": []
+      }
+    },
+    {
+      "name": "a vow that cannot be broken",
+      "expect": "E_IMMORTAL",
+      "patch": {
+        "root": "OWNERSHIP",
+        "operation": "BIND",
+        "tier": "VOW",
+        "scope": {
+          "shape": "SELF"
+        },
+        "term": {
+          "until": "KEPT",
+          "ticks": 0
+        },
+        "price": {
+          "resonance": 0
+        },
+        "forfeit": {
+          "harm": 15
+        },
+        "reward": {
+          "standing": 2
+        },
+        "breach": [],
+        "counterplay": [],
+        "clauses": []
+      }
+    },
+    {
+      "name": "a vow that pays too much",
+      "expect": "E_BUDGET",
+      "patch": {
+        "root": "OWNERSHIP",
+        "operation": "BIND",
+        "tier": "VOW",
+        "scope": {
+          "shape": "SELF"
+        },
+        "term": {
+          "until": "KEPT",
+          "ticks": 0
+        },
+        "price": {
+          "resonance": 0
+        },
+        "forfeit": {
+          "harm": 15
+        },
+        "reward": {
+          "standing": 7
+        },
+        "breach": [
+          {
+            "type": "EVENT",
+            "on": [
+              "HARM"
+            ],
+            "where": {
+              "target": {
+                "rel": "OWNER"
+              }
+            },
+            "reason": "r"
+          }
+        ],
+        "counterplay": [],
+        "clauses": []
+      }
+    },
+    {
+      "name": "a vow broken by what someone else suffers",
+      "expect": "E_VOW",
+      "patch": {
+        "root": "OWNERSHIP",
+        "operation": "BIND",
+        "tier": "VOW",
+        "scope": {
+          "shape": "SELF"
+        },
+        "term": {
+          "until": "KEPT",
+          "ticks": 0
+        },
+        "price": {
+          "resonance": 0
+        },
+        "forfeit": {
+          "harm": 15
+        },
+        "reward": {
+          "standing": 2
+        },
+        "breach": [
+          {
+            "type": "EVENT",
+            "on": [
+              "HARM"
+            ],
+            "where": {
+              "target": {
+                "rel": "HOSTILE"
+              }
+            },
+            "reason": "r"
+          }
+        ],
+        "counterplay": [],
+        "clauses": []
+      }
+    },
+    {
+      "name": "a vow that grants a power while it stands",
+      "expect": "E_VOW",
+      "patch": {
+        "root": "OWNERSHIP",
+        "operation": "BIND",
+        "tier": "VOW",
+        "scope": {
+          "shape": "SELF"
+        },
+        "term": {
+          "until": "KEPT",
+          "ticks": 0
+        },
+        "price": {
+          "resonance": 0
+        },
+        "forfeit": {
+          "harm": 15
+        },
+        "reward": {
+          "standing": 2
+        },
+        "breach": [
+          {
+            "type": "EVENT",
+            "on": [
+              "HARM"
+            ],
+            "where": {
+              "target": {
+                "rel": "OWNER"
+              }
+            },
+            "reason": "r"
+          }
+        ],
+        "counterplay": [],
+        "clauses": [
+          {
+            "on": [
+              "STRIKE"
+            ],
+            "stage": "MODIFY",
+            "op": "TRANSFER",
+            "params": {
+              "mode": "MIRROR",
+              "pct": 50,
+              "tag": "x"
+            },
+            "where": {
+              "source": {
+                "rel": "OWNER"
+              },
+              "tags": {
+                "none": [
+                  "x"
+                ]
+              }
+            },
+            "reason": "r"
+          }
+        ]
+      }
+    },
+    {
+      "name": "a vow sworn for a time",
+      "expect": "E_TERM",
+      "patch": {
+        "root": "OWNERSHIP",
+        "operation": "BIND",
+        "tier": "VOW",
+        "scope": {
+          "shape": "SELF"
+        },
+        "term": {
+          "ticks": 600
+        },
+        "price": {
+          "resonance": 0
+        },
+        "forfeit": {
+          "harm": 15
+        },
+        "reward": {
+          "standing": 2
+        },
+        "breach": [
+          {
+            "type": "EVENT",
+            "on": [
+              "HARM"
+            ],
+            "where": {
+              "target": {
+                "rel": "OWNER"
+              }
+            },
+            "reason": "r"
+          }
+        ],
+        "counterplay": [],
+        "clauses": []
+      }
+    },
+    {
+      "name": "a vow laid on a field",
+      "expect": "E_VOW",
+      "patch": {
+        "root": "OWNERSHIP",
+        "operation": "BIND",
+        "tier": "VOW",
+        "scope": {
+          "shape": "FIELD"
+        },
+        "term": {
+          "until": "KEPT",
+          "ticks": 0
+        },
+        "price": {
+          "resonance": 0
+        },
+        "forfeit": {
+          "harm": 15
+        },
+        "reward": {
+          "standing": 2
+        },
+        "breach": [
+          {
+            "type": "EVENT",
+            "on": [
+              "HARM"
+            ],
+            "where": {
+              "target": {
+                "rel": "OWNER"
+              }
+            },
+            "reason": "r"
+          }
+        ],
+        "counterplay": [],
+        "clauses": []
+      }
+    }
+  ]
+}

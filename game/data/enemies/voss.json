@@ -1,0 +1,68 @@
+{
+  "_comment": "Aurel Voss, the Last Arbiter. His three phases and the laws he keeps in each are here; how he fights is in gameplay/actors/voss.gd. He yields; he is not killed.",
+  "id": "voss",
+  "name": "Aurel Voss",
+  "title": "The Last Arbiter",
+  "model": "res://assets/models/figures/voss.glb",
+  "right": "res://assets/models/props/imprimatur.glb",
+  "left": "",
+  "scale": 1.08,
+  "hp": 420,
+  "poise": 140,
+  "speed": 0.5,
+  "armoured": true,
+  "moveset": "res://data/instruments/voss.json",
+  "ai": {
+    "near": 3.0,
+    "far": 4.6,
+    "wait": [
+      45,
+      95
+    ],
+    "heavy": 0.4,
+    "double": 0.4,
+    "guard_when_hit": 0.15,
+    "riposte": 0.5
+  },
+  "laws": [],
+  "boss": {
+    "yield_pct": 8,
+    "resonance_per_upkeep": 5,
+    "phases": [
+      {
+        "name": "Arraignment",
+        "above_pct": 66,
+        "standing": 1,
+        "says": "You will be heard. One rule at a time.",
+        "writs": [
+          "voss.writ_of_standing",
+          "voss.writ_of_order",
+          "voss.writ_of_licence"
+        ]
+      },
+      {
+        "name": "Cross-examination",
+        "above_pct": 33,
+        "standing": 2,
+        "baits": true,
+        "says": "Two rules now. Mind them both.",
+        "writs": [
+          "voss.writ_of_standing",
+          "voss.writ_of_order",
+          "voss.writ_of_licence"
+        ]
+      },
+      {
+        "name": "The Hearing",
+        "above_pct": 0,
+        "standing": 1,
+        "edict": "voss.the_hearing",
+        "says": "Then let it be a hearing. It binds me as it binds you.",
+        "writs": [
+          "voss.writ_of_licence"
+        ]
+      }
+    ],
+    "yields": "Enough. I have seen what you are. Take my licence, or refuse it."
+  }
+}

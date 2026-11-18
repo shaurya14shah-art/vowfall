@@ -1,0 +1,33 @@
+{
+  "_comment": "Keeps an Escort standing over himself and his Ward: the pair may pass, unless a law of equal standing contests it. Teaches Commit.",
+  "id": "bailiff_escort",
+  "name": "Escorting Bailiff",
+  "model": "res://assets/models/figures/bailiff.glb",
+  "hp": 60,
+  "poise": 45,
+  "speed": 0.62,
+  "moveset": "res://data/instruments/placeholder_bailiff.json",
+  "ai": {
+    "near": 2.3,
+    "far": 3.6,
+    "wait": [
+      45,
+      95
+    ],
+    "heavy": 0.3,
+    "double": 0.3,
+    "guard_when_hit": 0.7,
+    "riposte": 0.6
+  },
+  "laws": [
+    {
+      "id": "court.escort",
+      "when": "TARGET_HAS_LAW",
+      "pair_with_partner": true
+    }
+  ],
+  "armoured": true,
+  "right": "res://assets/models/props/tipstaff.glb",
+  "left": "res://assets/models/props/tablet.glb",
+  "scale": 1.06
+}

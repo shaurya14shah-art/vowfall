@@ -1,0 +1,69 @@
+{
+  "laws": [
+    {
+      "id": "threshold.gatekeeper",
+      "version": 1,
+      "root": "THRESHOLD",
+      "name": "The Gatekeeper",
+      "thesis": "Nothing may cross without permission.",
+      "text": "Draw a line. Hostile strikes and hostile movement that cross it are denied. After three denials the line is spent. Step over your own line and it ends.",
+      "operation": "DENY",
+      "tier": "TECHNIQUE",
+      "scope": {"shape": "LINE", "max_length": 600},
+      "term": {"ticks": 480, "events": 3},
+      "price": {"resonance": 30},
+      "breach": [{"type": "OWNER_CROSSES"}],
+      "counterplay": ["GO_AROUND", "EXHAUST", "BAIT_OWNER"],
+      "clauses": [
+        {
+          "id": "deny_crossing",
+          "on": ["STRIKE", "MOVE"], "stage": "DENY", "op": "DENY", "counts": true,
+          "where": {"source": {"rel": "HOSTILE", "none": ["admitted"]}, "path": "CROSSES"},
+          "reason": "it crossed a line it was not admitted through"
+        }
+      ],
+      "unveiled": {
+        "text": "The line stands without you. Four denials. You may cross it freely, and your own strikes through it land harder.",
+        "term": {"ticks": 600, "events": 4},
+        "breach": [],
+        "add_clauses": [
+          {
+            "id": "struck_from_the_threshold",
+            "on": ["STRIKE"], "stage": "MODIFY", "op": "ALTER",
+            "params": {"amount_pct": 130},
+            "where": {"source": {"rel": "OWNER"}, "path": "CROSSES"},
+            "reason": "it was struck from the threshold"
+          }
+        ]
+      }
+    },
+    {
+      "id": "threshold.divide",
+      "version": 1,
+      "root": "THRESHOLD",
+      "name": "The Divide",
+      "thesis": "Every boundary creates two sides.",
+      "text": "Draw a line. Nothing passes between its two sides: no strike, no step, no healing, no law, yours included. Anything bound across it is cut off until it ends.",
+      "operation": "DIVIDE",
+      "tier": "TECHNIQUE",
+      "scope": {"shape": "LINE", "max_length": 900},
+      "term": {"ticks": 360},
+      "price": {"resonance": 35},
+      "breach": [{"type": "OWNER_CROSSES"}],
+      "counterplay": ["GO_AROUND", "OUTLAST", "SHARE_A_SIDE"],
+      "clauses": [
+        {
+          "id": "sever",
+          "on": ["STRIKE", "MOVE", "HARM", "HEAL", "IMPOSE"], "stage": "DENY", "op": "DIVIDE",
+          "where": {"path": "CROSSES"},
+          "reason": "nothing passes between the two sides"
+        }
+      ],
+      "unveiled": {
+        "text": "The line closes into a ring around where you stand. Inside and outside cannot touch each other.",
+        "scope": {"shape": "RING", "radius": 450},
+        "term": {"ticks": 480}
+      }
+    }
+  ]
+}

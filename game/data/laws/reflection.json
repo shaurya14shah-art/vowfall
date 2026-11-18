@@ -1,0 +1,72 @@
+{
+  "laws": [
+    {
+      "id": "reflection.twin",
+      "version": 1,
+      "root": "REFLECTION",
+      "name": "The Twin",
+      "thesis": "What is done to one is done to its twin.",
+      "text": "Bind two that stand near each other. Harm done to either is done again to the other, at three fifths. So is healing. Six echoes, then the bond is spent. Part them far enough and it breaks.",
+      "operation": "BIND",
+      "tier": "TECHNIQUE",
+      "scope": {"shape": "PAIR"},
+      "term": {"ticks": 720, "events": 6},
+      "price": {"resonance": 30},
+      "condition": [{"pred": "PAIR_WITHIN", "reach": 900}],
+      "breach": [{"type": "PAIR_SEPARATED", "reach": 1500}, {"type": "PAIR_MEMBER_DOWN"}],
+      "counterplay": ["SEPARATE", "EXHAUST", "TURN_IT"],
+      "clauses": [
+        {
+          "id": "copy",
+          "on": ["HARM", "HEAL"], "stage": "REACT", "op": "TRANSFER", "counts": true,
+          "params": {"mode": "COPY_TO_PAIR", "pct": 60, "tag": "copied"},
+          "where": {"pair": "TARGET_IN_PAIR", "tags": {"none": ["copied"]}},
+          "reason": "what is done to one is done to its twin"
+        }
+      ],
+      "unveiled": {
+        "text": "The twin receives the whole of it, and distance no longer parts them.",
+        "breach": [{"type": "PAIR_MEMBER_DOWN"}],
+        "clauses": [
+          {
+            "id": "copy",
+            "on": ["HARM", "HEAL"], "stage": "REACT", "op": "TRANSFER", "counts": true,
+            "params": {"mode": "COPY_TO_PAIR", "pct": 100, "tag": "copied"},
+            "where": {"pair": "TARGET_IN_PAIR", "tags": {"none": ["copied"]}},
+            "reason": "what is done to one is done to its twin"
+          }
+        ]
+      }
+    },
+    {
+      "id": "reflection.answer",
+      "version": 1,
+      "root": "REFLECTION",
+      "name": "The Answer",
+      "thesis": "Every act has its reflection.",
+      "text": "Each strike you land by hand is struck again from the opposite side, at half. Parry perfectly and the blow is returned to the one who threw it. Six answers, then it is spent.",
+      "operation": "INVERT",
+      "tier": "TECHNIQUE",
+      "scope": {"shape": "SELF"},
+      "term": {"ticks": 600, "events": 6},
+      "price": {"resonance": 25},
+      "breach": [],
+      "counterplay": ["EXHAUST", "GUARD_BOTH_SIDES", "FEINT_THE_PARRY"],
+      "clauses": [
+        {
+          "id": "mirror",
+          "on": ["HARM"], "stage": "REACT", "op": "TRANSFER", "counts": true,
+          "params": {"mode": "MIRROR", "pct": 50, "tag": "mirrored"},
+          "where": {"source": {"rel": "OWNER"}, "target": {"rel": "HOSTILE"}, "tags": {"all": ["by_hand"], "none": ["mirrored", "returned"]}},
+          "reason": "every act has its reflection"
+        },
+        {
+          "id": "return",
+          "on": ["STRIKE"], "stage": "REDIRECT", "op": "INVERT", "counts": true,
+          "where": {"target": {"rel": "OWNER"}, "tags": {"all": ["perfect_parry"], "none": ["returned"]}},
+          "reason": "the act is answered in kind"
+        }
+      ]
+    }
+  ]
+}

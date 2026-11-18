@@ -1,0 +1,634 @@
+{
+  "cast": {
+    "P": {
+      "id": 1,
+      "name": "Player",
+      "team": 1,
+      "tags": [
+        "person"
+      ],
+      "pos": [
+        0,
+        0
+      ]
+    },
+    "E": {
+      "id": 2,
+      "name": "Bailiff",
+      "team": 2,
+      "tags": [
+        "person"
+      ],
+      "pos": [
+        0,
+        400
+      ]
+    }
+  },
+  "scenarios": [
+    {
+      "name": "Creditor: a witnessed harm becomes a loan and is called in",
+      "entities": [
+        "P",
+        "E"
+      ],
+      "steps": [
+        {
+          "do": "impose",
+          "owner": 1,
+          "def": "debt.creditor",
+          "expect": {
+            "verdict": "APPLIED"
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "resonance",
+          "eq": 80
+        },
+        {
+          "do": "strike",
+          "source": 2,
+          "target": 1,
+          "amount": 15,
+          "expect": {
+            "verdict": "APPLIED",
+            "outcomes": [
+              {
+                "type": "CONVERSION",
+                "law": "debt.creditor"
+              }
+            ]
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 85
+        },
+        {
+          "do": "assert_held",
+          "owner": 1,
+          "def": "debt.creditor",
+          "eq": 15
+        },
+        {
+          "do": "strike",
+          "source": 2,
+          "target": 1,
+          "amount": 10,
+          "tags": [
+            "from_behind"
+          ]
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 75
+        },
+        {
+          "do": "assert_held",
+          "owner": 1,
+          "def": "debt.creditor",
+          "eq": 15
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "tags": [
+            "call_in"
+          ],
+          "expect": {
+            "verdict": "APPLIED",
+            "outcomes": [
+              {
+                "type": "CONVERSION",
+                "law": "debt.creditor"
+              }
+            ]
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 2,
+          "stat": "hp",
+          "eq": 75
+        },
+        {
+          "do": "assert_held",
+          "owner": 1,
+          "def": "debt.creditor",
+          "eq": 0
+        }
+      ]
+    },
+    {
+      "name": "Creditor: loans are forgotten when the law ends",
+      "entities": [
+        "P",
+        "E"
+      ],
+      "steps": [
+        {
+          "do": "impose",
+          "owner": 1,
+          "def": "debt.creditor"
+        },
+        {
+          "do": "strike",
+          "source": 2,
+          "target": 1,
+          "amount": 15
+        },
+        {
+          "do": "advance",
+          "ticks": 900
+        },
+        {
+          "do": "assert_law",
+          "owner": 1,
+          "def": "debt.creditor",
+          "active": false
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "tags": [
+            "call_in"
+          ]
+        },
+        {
+          "do": "assert",
+          "entity": 2,
+          "stat": "hp",
+          "eq": 90
+        }
+      ]
+    },
+    {
+      "name": "UNVEILING: the Creditor garnishes a debtor's hand",
+      "entities": [
+        {
+          "use": "P",
+          "form": "UNVEILED"
+        },
+        "E"
+      ],
+      "steps": [
+        {
+          "do": "impose",
+          "owner": 1,
+          "def": "debt.creditor"
+        },
+        {
+          "do": "strike",
+          "source": 2,
+          "target": 1,
+          "amount": 20
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 80
+        },
+        {
+          "do": "strike",
+          "source": 2,
+          "target": 1,
+          "amount": 20,
+          "expect": {
+            "outcomes": [
+              {
+                "type": "EFFECT",
+                "law": "debt.creditor"
+              }
+            ]
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 65
+        },
+        {
+          "do": "assert_held",
+          "owner": 1,
+          "def": "debt.creditor",
+          "eq": 35
+        }
+      ]
+    },
+    {
+      "name": "Debtor: harm is deferred, paid forward by striking, and the rest comes due with interest",
+      "entities": [
+        "P",
+        "E"
+      ],
+      "steps": [
+        {
+          "do": "impose",
+          "owner": 1,
+          "def": "debt.debtor"
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "resonance",
+          "eq": 75
+        },
+        {
+          "do": "strike",
+          "source": 2,
+          "target": 1,
+          "amount": 20,
+          "expect": {
+            "verdict": "APPLIED",
+            "outcomes": [
+              {
+                "type": "CONVERSION",
+                "law": "debt.debtor"
+              }
+            ]
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 100
+        },
+        {
+          "do": "assert_held",
+          "owner": 1,
+          "def": "debt.debtor",
+          "eq": 20
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 12
+        },
+        {
+          "do": "assert",
+          "entity": 2,
+          "stat": "hp",
+          "eq": 76
+        },
+        {
+          "do": "assert_held",
+          "owner": 1,
+          "def": "debt.debtor",
+          "eq": 8
+        },
+        {
+          "do": "advance",
+          "ticks": 479
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 100
+        },
+        {
+          "do": "advance",
+          "ticks": 1
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 90
+        },
+        {
+          "do": "assert_held",
+          "owner": 1,
+          "def": "debt.debtor",
+          "eq": 0
+        }
+      ]
+    },
+    {
+      "name": "Debtor: owing more than can be carried is a default",
+      "entities": [
+        "P",
+        "E"
+      ],
+      "steps": [
+        {
+          "do": "impose",
+          "owner": 1,
+          "def": "debt.debtor"
+        },
+        {
+          "do": "strike",
+          "source": 2,
+          "target": 1,
+          "amount": 30
+        },
+        {
+          "do": "strike",
+          "source": 2,
+          "target": 1,
+          "amount": 20
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 100
+        },
+        {
+          "do": "strike",
+          "source": 2,
+          "target": 1,
+          "amount": 15,
+          "expect": {
+            "outcomes": [
+              {
+                "type": "BREACH",
+                "law": "debt.debtor"
+              }
+            ]
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 3
+        },
+        {
+          "do": "assert_law",
+          "owner": 1,
+          "def": "debt.debtor",
+          "active": false
+        }
+      ]
+    },
+    {
+      "name": "Debtor: a debt outlives the law that deferred it",
+      "entities": [
+        "P",
+        "E"
+      ],
+      "steps": [
+        {
+          "do": "impose",
+          "owner": 1,
+          "def": "debt.debtor"
+        },
+        {
+          "do": "advance",
+          "ticks": 880
+        },
+        {
+          "do": "strike",
+          "source": 2,
+          "target": 1,
+          "amount": 20
+        },
+        {
+          "do": "advance",
+          "ticks": 20
+        },
+        {
+          "do": "assert_law",
+          "owner": 1,
+          "def": "debt.debtor",
+          "active": false
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 100
+        },
+        {
+          "do": "advance",
+          "ticks": 460
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 75
+        }
+      ]
+    },
+    {
+      "name": "UNVEILING: the Debtor pays forward with interest",
+      "entities": [
+        {
+          "use": "P",
+          "form": "UNVEILED"
+        },
+        "E"
+      ],
+      "steps": [
+        {
+          "do": "impose",
+          "owner": 1,
+          "def": "debt.debtor"
+        },
+        {
+          "do": "strike",
+          "source": 2,
+          "target": 1,
+          "amount": 20
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 12
+        },
+        {
+          "do": "assert",
+          "entity": 2,
+          "stat": "hp",
+          "eq": 73
+        },
+        {
+          "do": "assert_held",
+          "owner": 1,
+          "def": "debt.debtor",
+          "eq": 8
+        }
+      ]
+    },
+    {
+      "name": "A law ends when its author falls",
+      "entities": [
+        "P",
+        "E"
+      ],
+      "steps": [
+        {
+          "do": "impose",
+          "owner": 1,
+          "def": "debt.creditor"
+        },
+        {
+          "do": "strike",
+          "source": 2,
+          "target": 1,
+          "amount": 100
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 0
+        },
+        {
+          "do": "assert_law",
+          "owner": 1,
+          "def": "debt.creditor",
+          "active": false
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "expect": {
+            "verdict": "REJECTED"
+          }
+        }
+      ]
+    },
+    {
+      "name": "PRICE: a law that cannot be paid for is rejected and nothing is spent",
+      "entities": [
+        {
+          "use": "P",
+          "resonance": 10
+        },
+        "E"
+      ],
+      "steps": [
+        {
+          "do": "impose",
+          "owner": 1,
+          "def": "debt.creditor",
+          "expect": {
+            "verdict": "REJECTED",
+            "outcomes": [
+              {
+                "type": "REJECTION"
+              }
+            ]
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "resonance",
+          "eq": 10
+        },
+        {
+          "do": "assert_law",
+          "owner": 1,
+          "def": "debt.creditor",
+          "active": false
+        }
+      ]
+    },
+    {
+      "name": "CATCH: a guarded blow is owed in full, not only what got through",
+      "entities": [
+        "P",
+        "E"
+      ],
+      "steps": [
+        {
+          "do": "impose",
+          "owner": 1,
+          "def": "debt.creditor"
+        },
+        {
+          "do": "strike",
+          "source": 2,
+          "target": 1,
+          "amount": 3,
+          "tags": [
+            "from_front",
+            "guarded"
+          ],
+          "data": {
+            "weight": 12
+          },
+          "expect": {
+            "verdict": "APPLIED",
+            "outcomes": [
+              {
+                "type": "CONVERSION",
+                "law": "debt.creditor"
+              }
+            ]
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 97
+        },
+        {
+          "do": "assert_held",
+          "owner": 1,
+          "def": "debt.creditor",
+          "eq": 12
+        },
+        {
+          "do": "strike",
+          "source": 2,
+          "target": 1,
+          "amount": 0,
+          "tags": [
+            "from_front",
+            "guarded"
+          ],
+          "data": {
+            "weight": 5
+          }
+        },
+        {
+          "do": "assert_held",
+          "owner": 1,
+          "def": "debt.creditor",
+          "eq": 17
+        },
+        {
+          "do": "strike",
+          "source": 2,
+          "target": 1,
+          "amount": 10,
+          "tags": [
+            "from_front"
+          ],
+          "data": {
+            "weight": 10
+          }
+        },
+        {
+          "do": "assert_held",
+          "owner": 1,
+          "def": "debt.creditor",
+          "eq": 27
+        }
+      ]
+    }
+  ]
+}

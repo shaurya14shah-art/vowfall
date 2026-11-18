@@ -1,0 +1,24 @@
+VOWFALL verdict log. One Court Bailiff, same seed. The player's law: threshold.gatekeeper.
+Played by a scripted policy, not a person. The Bailiff fell after 26.4 s; the player ended on 64 health.
+Outcomes: { "IMPOSED": 7, "REJECTION": 8, "ENDED": 4 }
+
+  tick  outcome       law                 what happened  [who -> whom]
+     1  IMPOSED       Writ of Standing    authority 20  [Sealed post]
+     1  IMPOSED       Writ of Order       authority 20  [Sealed post]
+   256  IMPOSED       The Gatekeeper      authority 20  [The Witness]
+   418  REJECTION     The Gatekeeper      it crossed a line it was not admitted through  [Court Bailiff]
+   491  REJECTION     The Gatekeeper      it crossed a line it was not admitted through  [Court Bailiff]
+   573  REJECTION     The Gatekeeper      it crossed a line it was not admitted through  [Court Bailiff]
+   573  ENDED         The Gatekeeper      its term of acts was spent  [The Witness]
+   688  IMPOSED       The Gatekeeper      authority 20  [The Witness]
+   773  REJECTION     The Gatekeeper      it crossed a line it was not admitted through  [Court Bailiff -> The Witness]
+   849  REJECTION     The Gatekeeper      it crossed a line it was not admitted through  [Court Bailiff]
+   901  ENDED         Writ of Standing    its term ran out  [Sealed post]
+   901  ENDED         Writ of Order       its term ran out  [Sealed post]
+   901  IMPOSED       Writ of Standing    authority 20  [Sealed post]
+   901  IMPOSED       Writ of Order       authority 20  [Sealed post]
+   990  REJECTION     The Gatekeeper      it crossed a line it was not admitted through  [Court Bailiff -> The Witness]
+   991  ENDED         The Gatekeeper      its term of acts was spent  [The Witness]
+  1344  IMPOSED       The Gatekeeper      authority 20  [The Witness]
+  1426  REJECTION     The Gatekeeper      it crossed a line it was not admitted through  [Court Bailiff -> The Witness]
+  1568  REJECTION     The Gatekeeper      it crossed a line it was not admitted through  [Court Bailiff -> The Witness]

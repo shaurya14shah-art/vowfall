@@ -1,0 +1,158 @@
+{
+  "laws": [
+    {
+      "id": "voss.writ_of_standing",
+      "version": 1,
+      "root": "PERMISSION",
+      "name": "Writ of Standing",
+      "thesis": "No one may strike the Arbiter unseen.",
+      "text": "A strike made by hand against the Arbiter from behind is denied, and the one who made it is sanctioned.",
+      "operation": "DENY",
+      "tier": "TECHNIQUE",
+      "scope": {"shape": "FIELD"},
+      "term": {"ticks": 900},
+      "price": {"resonance": 20},
+      "breach": [],
+      "counterplay": ["FACE_HIM", "USE_LAWS_NOT_HANDS", "OUTLAST"],
+      "clauses": [
+        {
+          "id": "deny_unseen",
+          "on": ["STRIKE"], "stage": "DENY", "op": "DENY",
+          "params": {"sanction": 8},
+          "where": {"target": {"rel": "OWNER"}, "tags": {"all": ["by_hand", "from_behind"]}},
+          "reason": "the Arbiter did not see it struck"
+        }
+      ]
+    },
+    {
+      "id": "voss.writ_of_order",
+      "version": 1,
+      "root": "PERMISSION",
+      "name": "Writ of Order",
+      "thesis": "None may strike thrice unanswered.",
+      "text": "The third strike of any string made by hand against the Arbiter is denied, and the one who made it is sanctioned.",
+      "operation": "DENY",
+      "tier": "TECHNIQUE",
+      "scope": {"shape": "FIELD"},
+      "term": {"ticks": 900},
+      "price": {"resonance": 20},
+      "breach": [],
+      "counterplay": ["SHORT_STRINGS", "USE_LAWS_NOT_HANDS", "OUTLAST"],
+      "clauses": [
+        {
+          "id": "deny_third",
+          "on": ["STRIKE"], "stage": "DENY", "op": "DENY",
+          "params": {"sanction": 6},
+          "where": {"target": {"rel": "OWNER"}, "tags": {"all": ["by_hand"]}, "data": [{"key": "combo_index", "gte": 3}]},
+          "reason": "it was struck a third time unanswered"
+        }
+      ]
+    },
+    {
+      "id": "voss.writ_of_licence",
+      "version": 1,
+      "root": "PERMISSION",
+      "name": "Writ of Licence",
+      "thesis": "No law may be imposed without licence.",
+      "text": "No one the Arbiter has not recognised may impose a law. Whoever answers one of his blows with a perfect parry is recognised for ten seconds.",
+      "operation": "DENY",
+      "tier": "TECHNIQUE",
+      "scope": {"shape": "FIELD"},
+      "term": {"ticks": 900},
+      "price": {"resonance": 30},
+      "breach": [],
+      "counterplay": ["EARN_STANDING", "OUTLAST"],
+      "clauses": [
+        {
+          "id": "recognise",
+          "on": ["STRIKE"], "stage": "NOTICE", "op": "ALTER",
+          "params": {"tag_add": {"who": "TARGET", "tag": "recognised", "ticks": 600}},
+          "where": {"source": {"rel": "OWNER"}, "tags": {"all": ["perfect_parry"]}},
+          "reason": "the Arbiter recognises one who answers him"
+        },
+        {
+          "id": "deny_unlicensed",
+          "on": ["IMPOSE"], "stage": "DENY", "op": "DENY",
+          "where": {"source": {"rel": "HOSTILE", "none": ["recognised"]}},
+          "reason": "no law may be imposed without licence"
+        }
+      ]
+    },
+    {
+      "id": "voss.the_hearing",
+      "version": 1,
+      "root": "PERMISSION",
+      "name": "The Hearing",
+      "thesis": "No argument may be made twice.",
+      "text": "EDICT. For the next nine acts made by hand, no one may repeat their own last act. Whoever does is denied and sanctioned. This binds the Arbiter too.",
+      "operation": "DENY",
+      "tier": "EDICT",
+      "scope": {"shape": "FIELD"},
+      "term": {"ticks": 1800, "events": 9},
+      "price": {"resonance": 60},
+      "breach": [],
+      "counterplay": ["VARY_ACTS", "EXHAUST", "USE_LAWS_NOT_HANDS"],
+      "clauses": [
+        {
+          "id": "hear",
+          "on": ["STRIKE"], "stage": "NOTICE", "op": "REVEAL", "counts": true,
+          "where": {"tags": {"all": ["by_hand"]}, "first_of_swing": true},
+          "reason": "an act is heard"
+        },
+        {
+          "id": "deny_repeat",
+          "on": ["STRIKE"], "stage": "DENY", "op": "DENY",
+          "params": {"sanction": 10},
+          "where": {"tags": {"all": ["by_hand"]}, "same_act_as_last": true},
+          "reason": "the same argument was made twice"
+        }
+      ]
+    },
+    {
+      "id": "court.warrant",
+      "version": 1,
+      "root": "PERMISSION",
+      "name": "Warrant",
+      "thesis": "The bearer may pass.",
+      "text": "Carried by Court bailiffs. The bearer's next two strikes or steps may not be denied by any law less narrow than this one.",
+      "operation": "PRESERVE",
+      "tier": "TECHNIQUE",
+      "scope": {"shape": "SELF"},
+      "term": {"ticks": 600, "events": 2},
+      "price": {"resonance": 20},
+      "breach": [],
+      "counterplay": ["EXHAUST", "OUTRANK", "OUTLAST"],
+      "clauses": [
+        {
+          "id": "may_pass",
+          "on": ["STRIKE", "MOVE"], "stage": "GATES", "op": "PRESERVE", "counts": true,
+          "where": {"source": {"rel": "OWNER"}},
+          "reason": "the bearer may pass"
+        }
+      ]
+    },
+    {
+      "id": "court.escort",
+      "version": 1,
+      "root": "PERMISSION",
+      "name": "Escort",
+      "thesis": "The escorted may pass.",
+      "text": "Binds a bailiff and a ward. Strikes and steps by either may not be denied, unless a law of equal standing contests it.",
+      "operation": "PRESERVE",
+      "tier": "TECHNIQUE",
+      "scope": {"shape": "PAIR"},
+      "term": {"ticks": 600},
+      "price": {"resonance": 25},
+      "breach": [{"type": "PAIR_MEMBER_DOWN"}],
+      "counterplay": ["CONTEST", "SEPARATE", "OUTLAST"],
+      "clauses": [
+        {
+          "id": "may_pass",
+          "on": ["STRIKE", "MOVE"], "stage": "GATES", "op": "PRESERVE",
+          "where": {"pair": "SOURCE_IN_PAIR"},
+          "reason": "the escorted may pass"
+        }
+      ]
+    }
+  ]
+}

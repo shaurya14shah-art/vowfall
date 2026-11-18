@@ -1,0 +1,61 @@
+{
+  "_comment": "Vows (D-010, D-032). Veyr's standing law is that a vow spoken before a witness binds; at a vow-stone anyone may swear one. A Vow is a law of tier VOW with its author as subject: it grants nothing while it stands, it falls when the named thing happens, and it is kept when its author clears a post under it. Kept: Resonance made whole, and standing (added to the authority of every law they impose, until they next rest). Fallen: the forfeit in harm, on the spot, and all standing lost.",
+  "laws": [
+    {
+      "id": "vow.watched_back", "version": 1, "order": 1,
+      "root": "OWNERSHIP", "name": "The Watched Back",
+      "thesis": "I will not be struck from behind.",
+      "text": "VOW. If a blow from behind harms me, the vow falls: I pay 15, and my word is worth nothing. Kept, my word weighs 2 more.",
+      "operation": "BIND", "tier": "VOW",
+      "scope": {"shape": "SELF"}, "term": {"until": "KEPT", "ticks": 0},
+      "price": {"resonance": 0}, "forfeit": {"harm": 15}, "reward": {"resonance": 100, "standing": 2},
+      "breach": [
+        {"type": "EVENT", "on": ["HARM"], "where": {"target": {"rel": "OWNER"}, "tags": {"all": ["from_behind"]}},
+          "reason": "I was struck from behind"}
+      ],
+      "counterplay": [], "clauses": []
+    },
+    {
+      "id": "vow.varied_hand", "version": 1, "order": 2,
+      "root": "OWNERSHIP", "name": "The Varied Hand",
+      "thesis": "I will not make the same strike twice running.",
+      "text": "VOW. If I repeat my own last strike by hand, the vow falls: I pay 20, and my word is worth nothing. Kept, my word weighs 3 more.",
+      "operation": "BIND", "tier": "VOW",
+      "scope": {"shape": "SELF"}, "term": {"until": "KEPT", "ticks": 0},
+      "price": {"resonance": 0}, "forfeit": {"harm": 20}, "reward": {"resonance": 100, "standing": 3},
+      "breach": [
+        {"type": "EVENT", "on": ["STRIKE"], "where": {"source": {"rel": "OWNER"}, "tags": {"all": ["by_hand"]}, "same_act_as_last": true},
+          "reason": "I made the same strike twice"}
+      ],
+      "counterplay": [], "clauses": []
+    },
+    {
+      "id": "vow.bare_hands", "version": 1, "order": 3,
+      "root": "OWNERSHIP", "name": "Bare Hands",
+      "thesis": "I will impose no law.",
+      "text": "VOW. If I impose a law, the vow falls: I pay 20, and my word is worth nothing. A law of mine that another law refuses was never imposed. Kept, my word weighs 3 more.",
+      "operation": "BIND", "tier": "VOW",
+      "scope": {"shape": "SELF"}, "term": {"until": "KEPT", "ticks": 0},
+      "price": {"resonance": 0}, "forfeit": {"harm": 20}, "reward": {"resonance": 100, "standing": 3},
+      "breach": [
+        {"type": "EVENT", "on": ["IMPOSE"], "where": {"source": {"rel": "OWNER"}},
+          "reason": "I imposed a law"}
+      ],
+      "counterplay": [], "clauses": []
+    },
+    {
+      "id": "vow.unmarked", "version": 1, "order": 4,
+      "root": "OWNERSHIP", "name": "The Unmarked",
+      "thesis": "I will not be struck from the front.",
+      "text": "VOW. If a blow from the front harms me, even through my guard, the vow falls: I pay 25, and my word is worth nothing. Kept, my word weighs 4 more.",
+      "operation": "BIND", "tier": "VOW",
+      "scope": {"shape": "SELF"}, "term": {"until": "KEPT", "ticks": 0},
+      "price": {"resonance": 0}, "forfeit": {"harm": 25}, "reward": {"resonance": 100, "standing": 4},
+      "breach": [
+        {"type": "EVENT", "on": ["HARM"], "where": {"target": {"rel": "OWNER"}, "tags": {"all": ["from_front"]}},
+          "reason": "I was struck from the front"}
+      ],
+      "counterplay": [], "clauses": []
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "cast": {
+    "P":  {"id": 1, "name": "Player",  "team": 1, "tags": ["person"], "pos": [0, 0]},
+    "E":  {"id": 2, "name": "Bailiff", "team": 2, "tags": ["person"], "pos": [0, 400]},
+    "E2": {"id": 3, "name": "Ward",    "team": 2, "tags": ["person"], "pos": [300, 400]},
+    "A":  {"id": 4, "name": "Ally",    "team": 1, "tags": ["person"], "pos": [-200, 0]}
+  },
+  "scenarios": [
+    {
+      "name": "Twin: harm done to one is done to the other, and so is healing",
+      "entities": ["P", "E", "E2"],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "reflection.twin", "args": {"pair": [2, 3]}, "expect": {"verdict": "APPLIED"}},
+        {"do": "strike", "source": 1, "target": 2, "amount": 20, "expect": {"verdict": "APPLIED", "outcomes": [{"type": "EFFECT", "law": "reflection.twin"}]}},
+        {"do": "assert", "entity": 2, "stat": "hp", "eq": 80},
+        {"do": "assert", "entity": 3, "stat": "hp", "eq": 88},
+        {"do": "heal", "source": 2, "target": 2, "amount": 10},
+        {"do": "assert", "entity": 2, "stat": "hp", "eq": 90},
+        {"do": "assert", "entity": 3, "stat": "hp", "eq": 94}
+      ]
+    },
+    {
+      "name": "Twin: the bond breaks when the pair are parted",
+      "entities": ["P", "E", "E2"],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "reflection.twin", "args": {"pair": [2, 3]}},
+        {"do": "move", "entity": 3, "to": [2000, 400]},
+        {"do": "assert_law", "owner": 1, "def": "reflection.twin", "active": false},
+        {"do": "strike", "source": 1, "target": 2, "amount": 20},
+        {"do": "assert", "entity": 3, "stat": "hp", "eq": 100}
+      ]
+    },
+    {
+      "name": "CONDITION: a pair too far apart cannot be bound",
+      "entities": ["P", "E", {"use": "E2", "pos": [5000, 0]}],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "reflection.twin", "args": {"pair": [2, 3]}, "expect": {"verdict": "REJECTED", "outcomes": [{"type": "REJECTION"}]}},
+        {"do": "assert", "entity": 1, "stat": "resonance", "eq": 100}
+      ]
+    },
+    {
+      "name": "UNVEILING: the Twin receives the whole of it and distance no longer parts them",
+      "entities": [{"use": "P", "form": "UNVEILED"}, "E", "E2"],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "reflection.twin", "args": {"pair": [2, 3]}},
+        {"do": "move", "entity": 3, "to": [2000, 400]},
+        {"do": "assert_law", "owner": 1, "def": "reflection.twin", "active": true},
+        {"do": "strike", "source": 1, "target": 2, "amount": 20},
+        {"do": "assert", "entity": 3, "stat": "hp", "eq": 80}
+      ]
+    },
+    {
+      "name": "THRESHOLD x REFLECTION: a Divide drawn between twins severs the bond without ending it",
+      "entities": ["P", "E", "E2", "A"],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "reflection.twin", "args": {"pair": [2, 3]}},
+        {"do": "strike", "source": 1, "target": 2, "amount": 20},
+        {"do": "assert", "entity": 3, "stat": "hp", "eq": 88},
+        {"do": "impose", "owner": 4, "def": "threshold.divide", "args": {"line": [150, 100, 150, 700]}, "expect": {"verdict": "APPLIED"}},
+        {"do": "strike", "source": 1, "target": 2, "amount": 20, "expect": {"verdict": "APPLIED", "outcomes": [{"type": "REJECTION", "law": "threshold.divide"}]}},
+        {"do": "assert", "entity": 2, "stat": "hp", "eq": 60},
+        {"do": "assert", "entity": 3, "stat": "hp", "eq": 88},
+        {"do": "assert_law", "owner": 1, "def": "reflection.twin", "active": true},
+        {"do": "advance", "ticks": 360},
+        {"do": "strike", "source": 1, "target": 2, "amount": 20},
+        {"do": "assert", "entity": 3, "stat": "hp", "eq": 76}
+      ]
+    },
+    {
+      "name": "DEBT x REFLECTION: harm copied onto a Creditor is owed by the one who bound them",
+      "entities": [{"use": "P", "team": 1}, {"use": "A", "pos": [200, 0]}, "E"],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "debt.creditor"},
+        {"do": "impose", "owner": 2, "def": "reflection.twin", "args": {"pair": [1, 4]}},
+        {"do": "strike", "source": 2, "target": 4, "amount": 20, "tags": ["from_front"]},
+        {"do": "assert", "entity": 4, "stat": "hp", "eq": 80},
+        {"do": "assert", "entity": 1, "stat": "hp", "eq": 88},
+        {"do": "assert_held", "owner": 1, "def": "debt.creditor", "eq": 12},
+        {"do": "strike", "source": 1, "target": 2, "amount": 10, "tags": ["call_in"]},
+        {"do": "assert", "entity": 2, "stat": "hp", "eq": 78}
+      ]
+    },
+    {
+      "name": "Answer: every strike by hand is struck again from the far side",
+      "entities": ["P", "E"],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "reflection.answer"},
+        {"do": "assert", "entity": 1, "stat": "resonance", "eq": 75},
+        {"do": "strike", "source": 1, "target": 2, "amount": 20, "tags": ["from_front"], "expect": {"verdict": "APPLIED", "outcomes": [{"type": "EFFECT", "law": "reflection.answer"}], "child_tags": ["mirrored", "from_behind"]}},
+        {"do": "assert", "entity": 2, "stat": "hp", "eq": 70}
+      ]
+    },
+    {
+      "name": "Answer: a perfect parry returns the act to its author",
+      "entities": ["P", "E"],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "reflection.answer"},
+        {"do": "strike", "source": 2, "target": 1, "amount": 18, "tags": ["perfect_parry"], "expect": {"verdict": "CONVERTED", "outcomes": [{"type": "CONVERSION", "law": "reflection.answer"}]}},
+        {"do": "assert", "entity": 1, "stat": "hp", "eq": 100},
+        {"do": "assert", "entity": 2, "stat": "hp", "eq": 82}
+      ]
+    },
+    {
+      "name": "Two Answers do not echo forever",
+      "entities": ["P", "E"],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "reflection.answer"},
+        {"do": "impose", "owner": 2, "def": "reflection.answer"},
+        {"do": "strike", "source": 2, "target": 1, "amount": 18, "tags": ["perfect_parry"], "expect": {"verdict": "CONVERTED"}},
+        {"do": "assert", "entity": 2, "stat": "hp", "eq": 82},
+        {"do": "assert", "entity": 1, "stat": "hp", "eq": 100}
+      ]
+    },
+    {
+      "name": "THRESHOLD x REFLECTION: the reflection of a strike can be denied by a line the strike itself did not cross",
+      "entities": ["P", "E", {"use": "A", "team": 2, "pos": [0, 900]}],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "reflection.answer"},
+        {"do": "impose", "owner": 4, "def": "threshold.gatekeeper", "args": {"line": [-300, 600, 300, 600]}},
+        {"do": "strike", "source": 1, "target": 2, "amount": 20, "expect": {"verdict": "APPLIED", "outcomes": [{"type": "REJECTION", "law": "threshold.gatekeeper"}]}},
+        {"do": "assert", "entity": 2, "stat": "hp", "eq": 80}
+      ]
+    }
+  ]
+}

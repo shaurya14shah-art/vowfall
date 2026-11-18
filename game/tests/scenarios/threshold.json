@@ -1,0 +1,159 @@
+{
+  "cast": {
+    "P":  {"id": 1, "name": "Player",  "team": 1, "tags": ["person"], "pos": [0, 0]},
+    "E":  {"id": 2, "name": "Bailiff", "team": 2, "tags": ["person"], "pos": [0, 400]},
+    "E2": {"id": 3, "name": "Ward",    "team": 2, "tags": ["person"], "pos": [300, 400]},
+    "A":  {"id": 4, "name": "Ally",    "team": 1, "tags": ["person"], "pos": [-200, 0]}
+  },
+  "scenarios": [
+    {
+      "name": "Gatekeeper denies three crossings, then is spent",
+      "entities": ["P", "E"],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "threshold.gatekeeper", "args": {"line": [-300, 200, 300, 200]}, "expect": {"verdict": "APPLIED"}},
+        {"do": "assert", "entity": 1, "stat": "resonance", "eq": 70},
+        {"do": "strike", "source": 2, "target": 1, "amount": 10, "expect": {"verdict": "REJECTED", "outcomes": [{"type": "REJECTION", "law": "threshold.gatekeeper"}]}},
+        {"do": "strike", "source": 2, "target": 1, "amount": 10, "expect": {"verdict": "REJECTED"}},
+        {"do": "assert_law", "owner": 1, "def": "threshold.gatekeeper", "active": true},
+        {"do": "strike", "source": 2, "target": 1, "amount": 10, "expect": {"verdict": "REJECTED"}},
+        {"do": "assert_law", "owner": 1, "def": "threshold.gatekeeper", "active": false},
+        {"do": "assert", "entity": 1, "stat": "hp", "eq": 100},
+        {"do": "strike", "source": 2, "target": 1, "amount": 10, "expect": {"verdict": "APPLIED"}},
+        {"do": "assert", "entity": 1, "stat": "hp", "eq": 90}
+      ]
+    },
+    {
+      "name": "Gatekeeper can be gone around",
+      "entities": ["P", "E"],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "threshold.gatekeeper", "args": {"line": [-300, 200, 300, 200]}},
+        {"do": "move", "entity": 2, "to": [800, 0], "expect": {"verdict": "APPLIED"}},
+        {"do": "strike", "source": 2, "target": 1, "amount": 10, "expect": {"verdict": "APPLIED"}},
+        {"do": "assert", "entity": 1, "stat": "hp", "eq": 90},
+        {"do": "assert_law", "owner": 1, "def": "threshold.gatekeeper", "active": true}
+      ]
+    },
+    {
+      "name": "Gatekeeper denies a hostile step across the line",
+      "entities": ["P", "E"],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "threshold.gatekeeper", "args": {"line": [-300, 200, 300, 200]}},
+        {"do": "move", "entity": 2, "to": [0, 100], "expect": {"verdict": "REJECTED", "outcomes": [{"type": "REJECTION", "law": "threshold.gatekeeper"}]}},
+        {"do": "assert_pos", "entity": 2, "eq": [0, 400]}
+      ]
+    },
+    {
+      "name": "Gatekeeper ends when its author crosses their own line",
+      "entities": ["P", "E"],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "threshold.gatekeeper", "args": {"line": [-300, 200, 300, 200]}},
+        {"do": "move", "entity": 1, "to": [0, 300], "expect": {"verdict": "APPLIED", "outcomes": [{"type": "BREACH", "law": "threshold.gatekeeper"}]}},
+        {"do": "assert_law", "owner": 1, "def": "threshold.gatekeeper", "active": false},
+        {"do": "strike", "source": 2, "target": 1, "amount": 10, "expect": {"verdict": "APPLIED"}},
+        {"do": "assert", "entity": 1, "stat": "hp", "eq": 90}
+      ]
+    },
+    {
+      "name": "A line longer than the law allows is rejected and costs nothing",
+      "entities": ["P", "E"],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "threshold.gatekeeper", "args": {"line": [-900, 200, 900, 200]}, "expect": {"verdict": "REJECTED", "outcomes": [{"type": "REJECTION"}]}},
+        {"do": "assert", "entity": 1, "stat": "resonance", "eq": 100}
+      ]
+    },
+    {
+      "name": "UNVEILING: the Gatekeeper may cross, and strikes harder through the gate",
+      "entities": [{"use": "P", "form": "UNVEILED"}, "E"],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "threshold.gatekeeper", "args": {"line": [-300, 200, 300, 200]}},
+        {"do": "strike", "source": 1, "target": 2, "amount": 10, "expect": {"verdict": "APPLIED", "outcomes": [{"type": "EFFECT", "law": "threshold.gatekeeper"}]}},
+        {"do": "assert", "entity": 2, "stat": "hp", "eq": 87},
+        {"do": "move", "entity": 1, "to": [0, 300], "expect": {"verdict": "APPLIED"}},
+        {"do": "assert_law", "owner": 1, "def": "threshold.gatekeeper", "active": true},
+        {"do": "move", "entity": 1, "to": [0, 0]},
+        {"do": "strike", "source": 2, "target": 1, "amount": 10, "expect": {"verdict": "REJECTED"}},
+        {"do": "strike", "source": 2, "target": 1, "amount": 10, "expect": {"verdict": "REJECTED"}},
+        {"do": "strike", "source": 2, "target": 1, "amount": 10, "expect": {"verdict": "REJECTED"}},
+        {"do": "strike", "source": 2, "target": 1, "amount": 10, "expect": {"verdict": "REJECTED"}},
+        {"do": "assert_law", "owner": 1, "def": "threshold.gatekeeper", "active": false}
+      ]
+    },
+    {
+      "name": "The Divide binds its author: neither side can reach the other",
+      "entities": ["P", "E"],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "threshold.divide", "args": {"line": [-300, 200, 300, 200]}},
+        {"do": "assert", "entity": 1, "stat": "resonance", "eq": 65},
+        {"do": "strike", "source": 1, "target": 2, "amount": 10, "expect": {"verdict": "REJECTED", "outcomes": [{"type": "REJECTION", "law": "threshold.divide"}]}},
+        {"do": "strike", "source": 2, "target": 1, "amount": 10, "expect": {"verdict": "REJECTED"}},
+        {"do": "advance", "ticks": 360},
+        {"do": "assert_law", "owner": 1, "def": "threshold.divide", "active": false},
+        {"do": "strike", "source": 2, "target": 1, "amount": 10, "expect": {"verdict": "APPLIED"}}
+      ]
+    },
+    {
+      "name": "UNVEILING: the Divide closes into a ring",
+      "entities": [{"use": "P", "form": "UNVEILED"}, "E", {"use": "E2", "pos": [600, 0]}],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "threshold.divide", "args": {}},
+        {"do": "strike", "source": 3, "target": 1, "amount": 10, "expect": {"verdict": "REJECTED", "outcomes": [{"type": "REJECTION", "law": "threshold.divide"}]}},
+        {"do": "strike", "source": 2, "target": 1, "amount": 10, "expect": {"verdict": "APPLIED"}},
+        {"do": "strike", "source": 1, "target": 2, "amount": 10, "expect": {"verdict": "APPLIED"}},
+        {"do": "assert", "entity": 1, "stat": "hp", "eq": 90},
+        {"do": "assert", "entity": 2, "stat": "hp", "eq": 90}
+      ]
+    },
+    {
+      "name": "OVERRIDE: a Warrant is narrower than a line, and passes it",
+      "entities": ["P", "E"],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "threshold.gatekeeper", "args": {"line": [-300, 200, 300, 200]}},
+        {"do": "impose", "owner": 2, "def": "court.warrant"},
+        {"do": "strike", "source": 2, "target": 1, "amount": 10, "expect": {"verdict": "APPLIED", "outcomes": [{"type": "OVERRIDE", "law": "court.warrant", "over": "threshold.gatekeeper"}]}},
+        {"do": "strike", "source": 2, "target": 1, "amount": 10, "expect": {"verdict": "APPLIED"}},
+        {"do": "assert", "entity": 1, "stat": "hp", "eq": 80},
+        {"do": "assert_law", "owner": 2, "def": "court.warrant", "active": false},
+        {"do": "strike", "source": 2, "target": 1, "amount": 10, "expect": {"verdict": "REJECTED", "outcomes": [{"type": "REJECTION", "law": "threshold.gatekeeper"}]}},
+        {"do": "assert", "entity": 1, "stat": "hp", "eq": 80}
+      ]
+    },
+    {
+      "name": "CANCELLATION: an Escort and a line of equal authority both give way",
+      "entities": ["P", "E", "E2"],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "threshold.gatekeeper", "args": {"line": [-300, 200, 300, 200]}},
+        {"do": "impose", "owner": 2, "def": "court.escort", "args": {"pair": [2, 3]}},
+        {"do": "strike", "source": 2, "target": 1, "amount": 10, "expect": {"verdict": "APPLIED", "outcomes": [{"type": "CANCELLATION"}]}},
+        {"do": "assert_law", "owner": 1, "def": "threshold.gatekeeper", "active": false},
+        {"do": "assert_law", "owner": 2, "def": "court.escort", "active": false},
+        {"do": "assert", "entity": 1, "stat": "hp", "eq": 90}
+      ]
+    },
+    {
+      "name": "CONTEST: resonance committed to the line breaks the Escort",
+      "entities": ["P", "E", "E2"],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "threshold.gatekeeper", "args": {"line": [-300, 200, 300, 200], "commit": 5}},
+        {"do": "assert", "entity": 1, "stat": "resonance", "eq": 65},
+        {"do": "impose", "owner": 2, "def": "court.escort", "args": {"pair": [2, 3]}},
+        {"do": "strike", "source": 2, "target": 1, "amount": 10, "expect": {"verdict": "REJECTED", "outcomes": [{"type": "CONTEST", "law": "threshold.gatekeeper", "over": "court.escort"}, {"type": "REJECTION", "law": "threshold.gatekeeper"}]}},
+        {"do": "assert_law", "owner": 2, "def": "court.escort", "active": false},
+        {"do": "assert_law", "owner": 1, "def": "threshold.gatekeeper", "active": true},
+        {"do": "assert", "entity": 1, "stat": "hp", "eq": 100}
+      ]
+    },
+    {
+      "name": "KNOWLEDGE: a law witnessed three times is read",
+      "entities": ["P", "E"],
+      "steps": [
+        {"do": "impose", "owner": 1, "def": "threshold.gatekeeper", "args": {"line": [-300, 200, 300, 200]}},
+        {"do": "assert_knowledge", "team": 2, "def": "threshold.gatekeeper", "eq": 0},
+        {"do": "strike", "source": 2, "target": 1, "amount": 10},
+        {"do": "assert_knowledge", "team": 2, "def": "threshold.gatekeeper", "eq": 1},
+        {"do": "strike", "source": 2, "target": 1, "amount": 10},
+        {"do": "strike", "source": 2, "target": 1, "amount": 10},
+        {"do": "assert_knowledge", "team": 2, "def": "threshold.gatekeeper", "eq": 2}
+      ]
+    }
+  ]
+}

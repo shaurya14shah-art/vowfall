@@ -1,0 +1,46 @@
+{
+  "shots": [
+    "01_arriving_in_the_oath_market",
+    "02_the_hanging_courts_over_the_stair",
+    "03_where_the_vow_broke",
+    "04_the_market_stone",
+    "05_reading_the_notice",
+    "06_the_bailiff_at_the_stair",
+    "07_the_scriveners_stair",
+    "08_four_clerks_on_the_landing",
+    "09_the_docket_gate_from_the_landing",
+    "10_the_way_down",
+    "11_the_drowned_docket",
+    "12_a_bailiff_and_his_ward",
+    "13_the_docket_stone",
+    "14_the_gate_from_behind",
+    "15_the_gate_open",
+    "16_the_forecourt_of_standing",
+    "17_carved_beside_the_portal",
+    "18_the_hall_of_standing",
+    "19_the_bar_of_standing"
+  ],
+  "timings": {
+    "docket": {
+      "avg_ms": 17.93,
+      "draw_calls": 535,
+      "frames": 172,
+      "median_ms": 16.75,
+      "p99_ms": 22.61
+    },
+    "hall": {
+      "avg_ms": 19.99,
+      "draw_calls": 221,
+      "frames": 103,
+      "median_ms": 16.77,
+      "p99_ms": 38.51
+    },
+    "market": {
+      "avg_ms": 17.82,
+      "draw_calls": 597,
+      "frames": 230,
+      "median_ms": 16.64,
+      "p99_ms": 32.96
+    }
+  }
+}

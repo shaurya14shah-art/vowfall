@@ -1,0 +1,19 @@
+{
+  "_comment": "THE LINTEL (Reach). Long, slow, wide: it owns the space a line is drawn in. Ticks are 60 Hz. reach and lunge in centimetres; arc in degrees (full width). anim_hit is the second in the clip at which the blow connects (tools/measure_clips.gd); the clip is sped up so that moment lands on the last startup tick. Motion clips are borrowed (see assets/models/LICENSES.md).",
+  "id": "lintel",
+  "idle": "2H_Melee_Idle",
+  "guard_chip_pct": 30,
+  "entry": {"light": "light_1", "heavy": "heavy_1"},
+  "moves": {
+    "light_1": {"act": "sweep", "anim": "2H_Melee_Attack_Slice", "anim_hit": 0.42, "startup": 14, "active": 4, "recovery": 20, "cancel_hit": 20, "cancel_whiff": 30, "damage": 14, "poise": 18, "reach": 340, "arc": 130, "lunge": 80, "stun": 16, "hitstop": 5, "gain": 5, "next": {"light": "light_2", "heavy": "heavy_1"}},
+    "light_2": {"act": "thrust", "anim": "2H_Melee_Attack_Stab", "anim_hit": 0.42, "startup": 15, "active": 3, "recovery": 22, "cancel_hit": 21, "cancel_whiff": 34, "damage": 16, "poise": 18, "reach": 400, "arc": 30, "lunge": 110, "stun": 18, "hitstop": 5, "gain": 6, "next": {"heavy": "heavy_1"}},
+    "heavy_1": {"act": "heavy", "anim": "2H_Melee_Attack_Chop", "anim_hit": 0.8, "startup": 24, "active": 4, "recovery": 28, "cancel_hit": 31, "cancel_whiff": 50, "damage": 30, "poise": 40, "reach": 350, "arc": 60, "lunge": 90, "stun": 26, "hitstop": 8, "gain": 10, "next": {}}
+  },
+  "awakened": {
+    "_comment": "Unveiled: the open crossbar turns a heavy blow into a full circle.",
+    "links": {"heavy_1": {"heavy": "spin"}, "light_2": {"light": "spin"}},
+    "moves": {
+      "spin": {"act": "turn", "anim": "2H_Melee_Attack_Spin", "anim_hit": 0.76, "startup": 22, "active": 6, "recovery": 30, "cancel_hit": 32, "cancel_whiff": 52, "damage": 26, "poise": 36, "reach": 360, "arc": 360, "lunge": 0, "stun": 24, "hitstop": 8, "gain": 10, "next": {}}
+    }
+  }
+}

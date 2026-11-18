@@ -1,0 +1,378 @@
+{
+  "_comment": "The Assize Quarter of Veyr (M5). Who stands where, what can be read, where a Witness may rest. The stone itself is built in gameplay/world/quarter.gd; positions here are metres in that space, [x, y, z], +Z north. Floors: market 0, landing 4, forecourt and Hall 8, Docket -4.",
+  "name": "The Assize Quarter",
+  "start": {
+    "at": [
+      0,
+      0,
+      -14
+    ],
+    "stone": "market"
+  },
+  "areas": [
+    {
+      "id": "market",
+      "name": "The Oath-Market",
+      "min": [
+        -20,
+        -18
+      ],
+      "max": [
+        20,
+        18
+      ],
+      "floor": 0
+    },
+    {
+      "id": "hall",
+      "name": "The Hall of Standing",
+      "min": [
+        -18,
+        83
+      ],
+      "max": [
+        18,
+        118
+      ],
+      "floor": 8
+    },
+    {
+      "id": "stair",
+      "name": "The Scriveners' Stair",
+      "min": [
+        -14,
+        18
+      ],
+      "max": [
+        12,
+        83
+      ],
+      "floor": 4
+    },
+    {
+      "id": "docket",
+      "name": "The Drowned Docket",
+      "min": [
+        12,
+        -10
+      ],
+      "max": [
+        54,
+        52
+      ],
+      "floor": -4
+    }
+  ],
+  "stones": [
+    {
+      "id": "market",
+      "name": "The Market Stone",
+      "at": [
+        -7,
+        0,
+        -7
+      ],
+      "stand": [
+        -7,
+        0,
+        -5.4
+      ]
+    },
+    {
+      "id": "docket",
+      "name": "The Docket Stone",
+      "at": [
+        50.5,
+        -4,
+        48
+      ],
+      "stand": [
+        50.5,
+        -4,
+        46.4
+      ]
+    },
+    {
+      "id": "forecourt",
+      "name": "The Stone of Standing",
+      "at": [
+        10.5,
+        8,
+        79.5
+      ],
+      "stand": [
+        9.0,
+        8,
+        78.5
+      ]
+    }
+  ],
+  "encounters": [
+    {
+      "id": "bailiff",
+      "name": "A Bailiff at the Stair",
+      "at": [
+        0,
+        0,
+        11
+      ],
+      "radius": 8.5,
+      "leash": 20,
+      "spawn": [
+        [
+          "bailiff",
+          [
+            0,
+            0,
+            13.5
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "clerks",
+      "name": "Four Clerks",
+      "at": [
+        0,
+        4,
+        43
+      ],
+      "radius": 8.0,
+      "leash": 13,
+      "spawn": [
+        [
+          "clerk",
+          [
+            3.6,
+            4,
+            45.5
+          ]
+        ],
+        [
+          "clerk",
+          [
+            1.2,
+            4,
+            47
+          ]
+        ],
+        [
+          "clerk",
+          [
+            -1.2,
+            4,
+            47
+          ]
+        ],
+        [
+          "clerk",
+          [
+            -3.6,
+            4,
+            45.5
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "escort",
+      "name": "A Bailiff and his Ward",
+      "at": [
+        45,
+        -4,
+        24
+      ],
+      "radius": 10.0,
+      "leash": 22,
+      "escort": true,
+      "spawn": [
+        [
+          "bailiff_escort",
+          [
+            46.3,
+            -4,
+            27
+          ]
+        ],
+        [
+          "ward",
+          [
+            43.7,
+            -4,
+            27.6
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "warrant",
+      "name": "A Bailiff with a Warrant",
+      "at": [
+        0,
+        8,
+        74
+      ],
+      "radius": 7.5,
+      "leash": 12,
+      "spawn": [
+        [
+          "bailiff_warrant",
+          [
+            0,
+            8,
+            77
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "voss",
+      "name": "Aurel Voss, the Last Arbiter",
+      "at": [
+        0,
+        8,
+        101
+      ],
+      "radius": 14.5,
+      "leash": 60,
+      "boss": true,
+      "spawn": [
+        [
+          "voss",
+          [
+            0,
+            8,
+            109
+          ]
+        ]
+      ]
+    }
+  ],
+  "records": [
+    {
+      "id": "notice",
+      "title": "Notice of the Meridian Court",
+      "at": [
+        5,
+        0,
+        -16.2
+      ],
+      "facing": 0,
+      "prop": "lectern",
+      "text": "By order of the Court. The Oath Hall on the west side of the market is closed for repair.\n\nNo vow was broken there. A vow spoken before a witness in Veyr cannot break.\n\nPersons saying otherwise will be asked who witnessed it."
+    },
+    {
+      "id": "chalk",
+      "title": "Chalked on the fallen stone",
+      "at": [
+        -16.2,
+        0,
+        1.0
+      ],
+      "facing": 1.5708,
+      "prop": "none",
+      "text": "It broke. I heard it. Eleven of us heard it.\n\nThey have asked each of us who the witness was, and each of us has said: not me.\n\nSomebody was. M.T."
+    },
+    {
+      "id": "slate",
+      "title": "An oath-broker's slate",
+      "at": [
+        10.5,
+        0,
+        -8
+      ],
+      "facing": 3.1416,
+      "prop": "lectern",
+      "text": "Vows witnessed today: none.\nYesterday: forty-one.\n\nNobody will swear to anything until somebody says what happened in the Hall. Rent is due regardless."
+    },
+    {
+      "id": "copy",
+      "title": "A copyist's working sheet",
+      "at": [
+        -10,
+        4,
+        36.5
+      ],
+      "facing": 0,
+      "prop": "lectern",
+      "text": "Canon, leaf twelve, copied fair for the Arbiter. Twelve Roots, as always.\n\nI have ruled thirteen lines, because the exemplar is ruled with thirteen. I do not know why the exemplar has thirteen lines.\n\nI have left the last one blank, as it is. T.H."
+    },
+    {
+      "id": "courts",
+      "title": "A child's question, answered in a clerk's hand",
+      "at": [
+        10,
+        4,
+        36.5
+      ],
+      "facing": 0,
+      "prop": "lectern",
+      "text": "Q. What holds the Courts up?\nA. The chains.\n\nQ. What holds the chains?\nA. That is not a question for the Stair."
+    },
+    {
+      "id": "docket",
+      "title": "A docket, water-damaged",
+      "at": [
+        38.2,
+        -4,
+        9
+      ],
+      "facing": -1.5708,
+      "prop": "lectern",
+      "text": "Contract of service. Parties: the ink has run.\nWitness: one, sworn. Term: until kept.\n\nOne line is struck through.\n\nThe strike is in fresher ink than the water."
+    },
+    {
+      "id": "order",
+      "title": "A Bailiff's standing order",
+      "at": [
+        51.8,
+        -4,
+        14
+      ],
+      "facing": 1.5708,
+      "prop": "lectern",
+      "text": "Wards are taken through the Docket under Escort, in pairs. While the two of you stand together nothing can bar your way.\n\nIf you are parted, the Escort lapses.\n\nDo not let them part you."
+    },
+    {
+      "id": "portal",
+      "title": "Carved beside the portal",
+      "at": [
+        -10.5,
+        8,
+        80.6
+      ],
+      "facing": 3.1416,
+      "prop": "none",
+      "text": "STANDING IS GRANTED, NOT TAKEN.\nTHE ARBITER SAYS EACH RULE BEFORE HE ENFORCES IT.\nHE IS BOUND BY WHAT HE SPEAKS.\n\nScratched underneath, small: so make him speak."
+    }
+  ],
+  "gates": [
+    {
+      "id": "docket_gate",
+      "name": "The Docket Gate",
+      "at": [
+        12,
+        4,
+        45
+      ],
+      "axis": "x",
+      "width": 6.0,
+      "opens_from": 1,
+      "locked": "It does not open from this side."
+    },
+    {
+      "id": "hall_gate",
+      "name": "The Bar of Standing",
+      "at": [
+        0,
+        8,
+        83.5
+      ],
+      "axis": "z",
+      "width": 8.0,
+      "opens_from": 0,
+      "starts_open": true,
+      "locked": "The Arbiter has not finished."
+    }
+  ]
+}

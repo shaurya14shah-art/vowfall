@@ -1,0 +1,14 @@
+VOWFALL verdict log. One Court Bailiff, same seed. The player's law: debt.creditor.
+Played by a scripted policy, not a person. The Bailiff fell after 10.3 s; the player ended on 64 health.
+Outcomes: { "IMPOSED": 3, "CONVERSION": 6 }
+
+  tick  outcome       law                 what happened  [who -> whom]
+     1  IMPOSED       Writ of Standing    authority 20  [Sealed post]
+     1  IMPOSED       Writ of Order       authority 20  [Sealed post]
+     5  IMPOSED       The Creditor        authority 20  [The Witness]
+   227  CONVERSION    The Creditor        a witnessed harm is recorded as a loan (12)  [Court Bailiff -> The Witness]
+   259  CONVERSION    The Creditor        the debt is called in (+12)  [The Witness -> Court Bailiff]
+   399  CONVERSION    The Creditor        a witnessed harm is recorded as a loan (12)  [Court Bailiff -> The Witness]
+   433  CONVERSION    The Creditor        the debt is called in (+12)  [The Witness -> Court Bailiff]
+   586  CONVERSION    The Creditor        a witnessed harm is recorded as a loan (12)  [Court Bailiff -> The Witness]
+   619  CONVERSION    The Creditor        the debt is called in (+12)  [The Witness -> Court Bailiff]

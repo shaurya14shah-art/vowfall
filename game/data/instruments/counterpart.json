@@ -1,0 +1,21 @@
+{
+  "_comment": "THE COUNTERPART (Edge). Fast three-cut strings at middle reach. Ticks are 60 Hz. reach and lunge in centimetres; arc in degrees (full width). anim_hit is the second in the clip at which the blow connects (tools/measure_clips.gd); the clip is sped up so that moment lands on the last startup tick. Motion clips are borrowed (see assets/models/LICENSES.md).",
+  "id": "counterpart",
+  "idle": "Idle",
+  "guard_chip_pct": 30,
+  "entry": {"light": "light_1", "heavy": "heavy_1"},
+  "moves": {
+    "light_1": {"act": "light", "anim": "1H_Melee_Attack_Slice_Horizontal", "anim_hit": 0.28, "startup": 9, "active": 3, "recovery": 14, "cancel_hit": 13, "cancel_whiff": 20, "damage": 10, "poise": 12, "reach": 240, "arc": 110, "lunge": 90, "stun": 14, "hitstop": 4, "gain": 4, "next": {"light": "light_2", "heavy": "heavy_2"}},
+    "light_2": {"act": "reverse", "anim": "1H_Melee_Attack_Slice_Diagonal", "anim_hit": 0.42, "startup": 10, "active": 3, "recovery": 15, "cancel_hit": 14, "cancel_whiff": 22, "damage": 10, "poise": 12, "reach": 240, "arc": 110, "lunge": 90, "stun": 14, "hitstop": 4, "gain": 4, "next": {"light": "light_3", "heavy": "heavy_2"}},
+    "light_3": {"act": "thrust", "anim": "1H_Melee_Attack_Stab", "anim_hit": 0.42, "startup": 12, "active": 3, "recovery": 18, "cancel_hit": 17, "cancel_whiff": 30, "damage": 13, "poise": 16, "reach": 290, "arc": 50, "lunge": 150, "stun": 18, "hitstop": 5, "gain": 5, "next": {"heavy": "heavy_2"}},
+    "heavy_1": {"act": "heavy", "anim": "1H_Melee_Attack_Chop", "anim_hit": 0.62, "startup": 18, "active": 4, "recovery": 22, "cancel_hit": 24, "cancel_whiff": 38, "damage": 22, "poise": 30, "reach": 250, "arc": 80, "lunge": 110, "stun": 22, "hitstop": 7, "gain": 9, "next": {"light": "light_2"}},
+    "heavy_2": {"act": "sweep", "anim": "2H_Melee_Attack_Slice", "anim_hit": 0.42, "startup": 16, "active": 4, "recovery": 24, "cancel_hit": 26, "cancel_whiff": 44, "damage": 24, "poise": 34, "reach": 260, "arc": 160, "lunge": 80, "stun": 24, "hitstop": 7, "gain": 9, "next": {}}
+  },
+  "awakened": {
+    "_comment": "Unveiled: the second blade answers the third cut with a turning fourth.",
+    "links": {"light_3": {"light": "light_4"}},
+    "moves": {
+      "light_4": {"act": "turn", "anim": "2H_Melee_Attack_Spinning", "anim_hit": 0.33, "startup": 11, "active": 4, "recovery": 20, "cancel_hit": 19, "cancel_whiff": 34, "damage": 14, "poise": 20, "reach": 260, "arc": 300, "lunge": 40, "stun": 18, "hitstop": 5, "gain": 6, "next": {"heavy": "heavy_2"}}
+    }
+  }
+}

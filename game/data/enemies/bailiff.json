@@ -1,0 +1,26 @@
+{
+  "id": "bailiff",
+  "name": "Court Bailiff",
+  "model": "res://assets/models/figures/bailiff.glb",
+  "hp": 60,
+  "poise": 45,
+  "speed": 0.62,
+  "moveset": "res://data/instruments/placeholder_bailiff.json",
+  "ai": {
+    "near": 2.3,
+    "far": 3.6,
+    "wait": [
+      35,
+      85
+    ],
+    "heavy": 0.3,
+    "double": 0.35,
+    "guard_when_hit": 0.7,
+    "riposte": 0.6
+  },
+  "laws": [],
+  "armoured": true,
+  "right": "res://assets/models/props/tipstaff.glb",
+  "left": "res://assets/models/props/tablet.glb",
+  "scale": 1.06
+}

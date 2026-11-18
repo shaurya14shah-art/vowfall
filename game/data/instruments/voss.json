@@ -1,0 +1,11 @@
+{
+  "_comment": "AUREL VOSS, with the Imprimatur. Long, deliberate, readable: every blow is announced by its wind-up. Each move has its own act name, because under his own Edict he may not make the same argument twice. Ticks are 60 Hz; reach and lunge in centimetres. Motion clips are borrowed.",
+  "id": "voss", "idle": "2H_Melee_Idle", "guard_chip_pct": 30,
+  "entry": {"light": "sweep", "heavy": "stamp", "circle": "circle"},
+  "moves": {
+    "sweep": {"act": "sweep", "anim": "2H_Melee_Attack_Slice", "anim_hit": 0.42, "startup": 28, "active": 4, "recovery": 30, "cancel_hit": 40, "cancel_whiff": 44, "damage": 18, "poise": 26, "reach": 330, "arc": 150, "lunge": 110, "stun": 18, "hitstop": 6, "gain": 0, "next": {"light": "thrust"}},
+    "thrust": {"act": "thrust", "anim": "2H_Melee_Attack_Stab", "anim_hit": 0.42, "startup": 26, "active": 3, "recovery": 36, "cancel_hit": 65, "cancel_whiff": 65, "damage": 20, "poise": 26, "reach": 410, "arc": 30, "lunge": 150, "stun": 20, "hitstop": 6, "gain": 0, "next": {}},
+    "stamp": {"act": "stamp", "anim": "2H_Melee_Attack_Chop", "anim_hit": 0.8, "startup": 42, "active": 4, "recovery": 40, "cancel_hit": 86, "cancel_whiff": 86, "damage": 26, "poise": 40, "reach": 330, "arc": 50, "lunge": 130, "stun": 26, "hitstop": 9, "gain": 0, "next": {"heavy": "circle"}},
+    "circle": {"act": "circle", "anim": "2H_Melee_Attack_Spin", "anim_hit": 0.76, "startup": 46, "active": 6, "recovery": 44, "cancel_hit": 96, "cancel_whiff": 96, "damage": 24, "poise": 36, "reach": 350, "arc": 360, "lunge": 0, "stun": 24, "hitstop": 8, "gain": 0, "next": {}}
+  }
+}

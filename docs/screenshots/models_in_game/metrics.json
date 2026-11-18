@@ -1,0 +1,32 @@
+{
+  "avg_ms": 17.69,
+  "draw_calls": 408,
+  "frames": 311,
+  "median_ms": 16.67,
+  "p99_ms": 34.88,
+  "primitives": 134664,
+  "render_cpu_ms": 0.65,
+  "shots": [
+    "01_gatekeeper_preview_and_commit",
+    "02_gatekeeper_standing",
+    "03_gatekeeper_denies",
+    "04_drawing_a_line",
+    "05_divide_binds_its_author",
+    "06_creditor_he_owes",
+    "07_creditor_called_in",
+    "08_debtor_owes",
+    "09_debtor_pays_forward",
+    "10_twin_bound",
+    "11_twin_shares_the_blow",
+    "12_answer_mirrored",
+    "13_answer_returns_the_blow",
+    "14_bailiff_draws_his_warrant",
+    "15_warrant_overrides_the_line",
+    "16_four_clerks"
+  ],
+  "window": [
+    3420,
+    2084
+  ],
+  "worst_ms": 50.97
+}

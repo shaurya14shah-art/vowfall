@@ -1,0 +1,16 @@
+VOWFALL verdict log. One Court Bailiff, same seed. The player's law: reflection.answer.
+Played by a scripted policy, not a person. The Bailiff fell after 9.3 s; the player ended on 100 health.
+Outcomes: { "IMPOSED": 3, "RETURNED": 3, "CONVERSION": 3, "MIRRORED": 2 }
+
+  tick  outcome       law                 what happened  [who -> whom]
+     1  IMPOSED       Writ of Standing    authority 20  [Sealed post]
+     1  IMPOSED       Writ of Order       authority 20  [Sealed post]
+     5  IMPOSED       The Answer          authority 20  [The Witness]
+   227  RETURNED                          12 harm by law  [The Witness -> Court Bailiff]
+   227  CONVERSION    The Answer          the act is answered in kind  [Court Bailiff -> The Witness]
+   248  MIRRORED                          5 harm by law  [The Witness -> Court Bailiff]
+   386  RETURNED                          12 harm by law  [The Witness -> Court Bailiff]
+   386  CONVERSION    The Answer          the act is answered in kind  [Court Bailiff -> The Witness]
+   408  MIRRORED                          5 harm by law  [The Witness -> Court Bailiff]
+   560  RETURNED                          12 harm by law  [The Witness -> Court Bailiff]
+   560  CONVERSION    The Answer          the act is answered in kind  [Court Bailiff -> The Witness]

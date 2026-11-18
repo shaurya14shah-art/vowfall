@@ -1,0 +1,34 @@
+{
+  "adapter": "Apple M4 (Apple9)",
+  "avg_ms": 17.0,
+  "draw_calls": 84,
+  "frames": 294,
+  "median_ms": 16.69,
+  "p99_ms": 33.72,
+  "primitives": 13048,
+  "scale_3d": 0.670000016689301,
+  "screen": [
+    3420,
+    2224
+  ],
+  "shots": [
+    "01_yard_from_spawn",
+    "02_yard_low_angle",
+    "03_sealed_post_locked",
+    "04_first_strike_lands",
+    "05_third_strike_denied",
+    "06_verdict_line_and_sensed_law",
+    "07_bailiff_telegraph",
+    "08_parry",
+    "09_heavy_lands",
+    "10_guard",
+    "11_dodge",
+    "12_free_fight"
+  ],
+  "video_mem_mb": 385.0,
+  "window": [
+    3420,
+    2084
+  ],
+  "worst_ms": 34.35
+}

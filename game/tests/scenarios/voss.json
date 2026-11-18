@@ -1,0 +1,952 @@
+{
+  "cast": {
+    "P": {
+      "id": 1,
+      "name": "Player",
+      "team": 1,
+      "tags": [
+        "person"
+      ],
+      "pos": [
+        0,
+        0
+      ]
+    },
+    "V": {
+      "id": 2,
+      "name": "Aurel Voss",
+      "team": 2,
+      "tags": [
+        "person",
+        "sovereign"
+      ],
+      "hp": 400,
+      "pos": [
+        0,
+        400
+      ]
+    },
+    "S": {
+      "id": 3,
+      "name": "Seal",
+      "team": 2,
+      "tags": [
+        "construct"
+      ],
+      "hp": 50,
+      "pos": [
+        100,
+        300
+      ]
+    }
+  },
+  "scenarios": [
+    {
+      "name": "Writ of Standing: a strike from behind is denied and sanctioned",
+      "entities": [
+        "P",
+        "V"
+      ],
+      "steps": [
+        {
+          "do": "impose",
+          "owner": 2,
+          "def": "voss.writ_of_standing",
+          "expect": {
+            "verdict": "APPLIED"
+          }
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 20,
+          "tags": [
+            "from_behind"
+          ],
+          "expect": {
+            "verdict": "REJECTED",
+            "outcomes": [
+              {
+                "type": "REJECTION",
+                "law": "voss.writ_of_standing"
+              }
+            ]
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 2,
+          "stat": "hp",
+          "eq": 400
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 92
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 20,
+          "tags": [
+            "from_front"
+          ],
+          "expect": {
+            "verdict": "APPLIED"
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 2,
+          "stat": "hp",
+          "eq": 380
+        }
+      ]
+    },
+    {
+      "name": "REFLECTION vs VOSS: Writs bind hands, not laws. The reflection strikes him from behind",
+      "entities": [
+        "P",
+        "V"
+      ],
+      "steps": [
+        {
+          "do": "impose",
+          "owner": 2,
+          "def": "voss.writ_of_standing"
+        },
+        {
+          "do": "impose",
+          "owner": 1,
+          "def": "reflection.answer"
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 20,
+          "tags": [
+            "from_front"
+          ],
+          "expect": {
+            "verdict": "APPLIED",
+            "child_tags": [
+              "mirrored",
+              "from_behind"
+            ]
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 2,
+          "stat": "hp",
+          "eq": 370
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 100
+        }
+      ]
+    },
+    {
+      "name": "DEBT vs VOSS: the Arbiter's sanction is a harm, and every harm is a loan",
+      "entities": [
+        "P",
+        "V"
+      ],
+      "steps": [
+        {
+          "do": "impose",
+          "owner": 2,
+          "def": "voss.writ_of_standing"
+        },
+        {
+          "do": "impose",
+          "owner": 1,
+          "def": "debt.creditor"
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 20,
+          "tags": [
+            "from_behind"
+          ],
+          "expect": {
+            "verdict": "REJECTED"
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 92
+        },
+        {
+          "do": "assert_held",
+          "owner": 1,
+          "def": "debt.creditor",
+          "eq": 8
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "tags": [
+            "from_front",
+            "call_in"
+          ]
+        },
+        {
+          "do": "assert",
+          "entity": 2,
+          "stat": "hp",
+          "eq": 382
+        }
+      ]
+    },
+    {
+      "name": "DEBT vs VOSS: a Debtor who cannot land strikes cannot pay, and the debt comes due",
+      "entities": [
+        "P",
+        "V"
+      ],
+      "steps": [
+        {
+          "do": "impose",
+          "owner": 2,
+          "def": "voss.writ_of_order"
+        },
+        {
+          "do": "impose",
+          "owner": 1,
+          "def": "debt.debtor"
+        },
+        {
+          "do": "strike",
+          "source": 2,
+          "target": 1,
+          "amount": 30,
+          "tags": [
+            "from_front"
+          ]
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 100
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "combo_index": 1
+          }
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "combo_index": 2
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 2,
+          "stat": "hp",
+          "eq": 360
+        },
+        {
+          "do": "assert_held",
+          "owner": 1,
+          "def": "debt.debtor",
+          "eq": 10
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "combo_index": 3
+          },
+          "expect": {
+            "verdict": "REJECTED",
+            "outcomes": [
+              {
+                "type": "REJECTION",
+                "law": "voss.writ_of_order"
+              }
+            ]
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 2,
+          "stat": "hp",
+          "eq": 360
+        },
+        {
+          "do": "assert_held",
+          "owner": 1,
+          "def": "debt.debtor",
+          "eq": 16
+        },
+        {
+          "do": "advance",
+          "ticks": 480
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 81
+        }
+      ]
+    },
+    {
+      "name": "Writ of Licence: no law without standing, and standing is earned by answering him",
+      "entities": [
+        "P",
+        "V"
+      ],
+      "steps": [
+        {
+          "do": "impose",
+          "owner": 2,
+          "def": "voss.writ_of_licence"
+        },
+        {
+          "do": "impose",
+          "owner": 1,
+          "def": "threshold.gatekeeper",
+          "args": {
+            "line": [
+              -300,
+              200,
+              300,
+              200
+            ]
+          },
+          "expect": {
+            "verdict": "REJECTED",
+            "outcomes": [
+              {
+                "type": "REJECTION",
+                "law": "voss.writ_of_licence"
+              }
+            ]
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "resonance",
+          "eq": 100
+        },
+        {
+          "do": "strike",
+          "source": 2,
+          "target": 1,
+          "amount": 0,
+          "tags": [
+            "perfect_parry"
+          ],
+          "expect": {
+            "outcomes": [
+              {
+                "type": "EFFECT",
+                "law": "voss.writ_of_licence"
+              }
+            ]
+          }
+        },
+        {
+          "do": "assert_tag",
+          "entity": 1,
+          "tag": "recognised",
+          "has": true
+        },
+        {
+          "do": "impose",
+          "owner": 1,
+          "def": "threshold.gatekeeper",
+          "args": {
+            "line": [
+              -300,
+              200,
+              300,
+              200
+            ]
+          },
+          "expect": {
+            "verdict": "APPLIED"
+          }
+        },
+        {
+          "do": "advance",
+          "ticks": 600
+        },
+        {
+          "do": "assert_tag",
+          "entity": 1,
+          "tag": "recognised",
+          "has": false
+        }
+      ]
+    },
+    {
+      "name": "THRESHOLD vs VOSS: a line stops his blow but not his Writ",
+      "entities": [
+        {
+          "use": "P",
+          "tags": [
+            "person",
+            "recognised"
+          ]
+        },
+        "V"
+      ],
+      "steps": [
+        {
+          "do": "impose",
+          "owner": 2,
+          "def": "voss.writ_of_standing"
+        },
+        {
+          "do": "impose",
+          "owner": 1,
+          "def": "threshold.gatekeeper",
+          "args": {
+            "line": [
+              -300,
+              200,
+              300,
+              200
+            ]
+          }
+        },
+        {
+          "do": "strike",
+          "source": 2,
+          "target": 1,
+          "amount": 25,
+          "tags": [
+            "from_front"
+          ],
+          "expect": {
+            "verdict": "REJECTED",
+            "outcomes": [
+              {
+                "type": "REJECTION",
+                "law": "threshold.gatekeeper"
+              }
+            ]
+          }
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 20,
+          "tags": [
+            "from_behind"
+          ],
+          "expect": {
+            "verdict": "REJECTED",
+            "outcomes": [
+              {
+                "type": "REJECTION",
+                "law": "voss.writ_of_standing"
+              }
+            ]
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 92
+        }
+      ]
+    },
+    {
+      "name": "EDICT The Hearing: no act may repeat, and it binds the Arbiter too",
+      "entities": [
+        "P",
+        "V"
+      ],
+      "steps": [
+        {
+          "do": "impose",
+          "owner": 2,
+          "def": "voss.the_hearing",
+          "expect": {
+            "verdict": "APPLIED"
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 2,
+          "stat": "resonance",
+          "eq": 40
+        },
+        {
+          "do": "assert_knowledge",
+          "team": 1,
+          "def": "voss.the_hearing",
+          "eq": 2
+        },
+        {
+          "do": "strike",
+          "source": 2,
+          "target": 1,
+          "amount": 10,
+          "data": {
+            "act": "stamp"
+          },
+          "expect": {
+            "verdict": "APPLIED"
+          }
+        },
+        {
+          "do": "strike",
+          "source": 2,
+          "target": 1,
+          "amount": 10,
+          "data": {
+            "act": "stamp"
+          },
+          "expect": {
+            "verdict": "REJECTED",
+            "outcomes": [
+              {
+                "type": "REJECTION",
+                "law": "voss.the_hearing"
+              }
+            ]
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 2,
+          "stat": "hp",
+          "eq": 390
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 90
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "act": "light"
+          },
+          "expect": {
+            "verdict": "APPLIED"
+          }
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "act": "light"
+          },
+          "expect": {
+            "verdict": "REJECTED"
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 80
+        },
+        {
+          "do": "assert",
+          "entity": 2,
+          "stat": "hp",
+          "eq": 380
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "act": "heavy"
+          }
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "act": "light"
+          }
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "act": "heavy"
+          }
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "act": "light"
+          }
+        },
+        {
+          "do": "assert_law",
+          "owner": 2,
+          "def": "voss.the_hearing",
+          "active": true
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "act": "heavy"
+          }
+        },
+        {
+          "do": "assert_law",
+          "owner": 2,
+          "def": "voss.the_hearing",
+          "active": false
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "act": "heavy"
+          },
+          "expect": {
+            "verdict": "APPLIED"
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 2,
+          "stat": "hp",
+          "eq": 320
+        }
+      ]
+    },
+    {
+      "name": "OVERRIDE by rank: a Warrant cannot excuse its bearer from an Edict",
+      "entities": [
+        "P",
+        "V"
+      ],
+      "steps": [
+        {
+          "do": "impose",
+          "owner": 1,
+          "def": "court.warrant"
+        },
+        {
+          "do": "impose",
+          "owner": 2,
+          "def": "voss.the_hearing"
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "act": "light"
+          },
+          "expect": {
+            "verdict": "APPLIED"
+          }
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "act": "light"
+          },
+          "expect": {
+            "verdict": "REJECTED",
+            "outcomes": [
+              {
+                "type": "OVERRIDE",
+                "law": "voss.the_hearing",
+                "over": "court.warrant"
+              },
+              {
+                "type": "REJECTION",
+                "law": "voss.the_hearing"
+              }
+            ]
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 90
+        },
+        {
+          "do": "assert_law",
+          "owner": 1,
+          "def": "court.warrant",
+          "active": true
+        }
+      ]
+    },
+    {
+      "name": "REFLECTION vs VOSS: under the Hearing, a reflection is not an argument",
+      "entities": [
+        "P",
+        "V"
+      ],
+      "steps": [
+        {
+          "do": "impose",
+          "owner": 1,
+          "def": "reflection.answer"
+        },
+        {
+          "do": "impose",
+          "owner": 2,
+          "def": "voss.the_hearing"
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 20,
+          "data": {
+            "act": "light"
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 2,
+          "stat": "hp",
+          "eq": 370
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 20,
+          "data": {
+            "act": "heavy"
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 2,
+          "stat": "hp",
+          "eq": 340
+        },
+        {
+          "do": "assert_law",
+          "owner": 2,
+          "def": "voss.the_hearing",
+          "active": true
+        }
+      ]
+    },
+    {
+      "name": "EDICT The Hearing: one swing that reaches two bodies is one act, not a repeat",
+      "entities": [
+        "P",
+        "V",
+        "S"
+      ],
+      "steps": [
+        {
+          "do": "impose",
+          "owner": 2,
+          "def": "voss.the_hearing"
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "act": "sweep",
+            "swing": 7
+          },
+          "expect": {
+            "verdict": "APPLIED"
+          }
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 3,
+          "amount": 10,
+          "data": {
+            "act": "sweep",
+            "swing": 7
+          },
+          "expect": {
+            "verdict": "APPLIED"
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 100
+        },
+        {
+          "do": "assert",
+          "entity": 3,
+          "stat": "hp",
+          "eq": 40
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "act": "sweep",
+            "swing": 8
+          },
+          "expect": {
+            "verdict": "REJECTED",
+            "outcomes": [
+              {
+                "type": "REJECTION",
+                "law": "voss.the_hearing"
+              }
+            ]
+          }
+        },
+        {
+          "do": "assert",
+          "entity": 1,
+          "stat": "hp",
+          "eq": 90
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "act": "thrust",
+            "swing": 9
+          },
+          "expect": {
+            "verdict": "APPLIED"
+          }
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "act": "sweep",
+            "swing": 10
+          }
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "act": "thrust",
+            "swing": 11
+          }
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "act": "sweep",
+            "swing": 12
+          }
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "act": "thrust",
+            "swing": 13
+          }
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "act": "sweep",
+            "swing": 14
+          }
+        },
+        {
+          "do": "assert_law",
+          "owner": 2,
+          "def": "voss.the_hearing",
+          "active": true
+        },
+        {
+          "do": "strike",
+          "source": 1,
+          "target": 2,
+          "amount": 10,
+          "data": {
+            "act": "thrust",
+            "swing": 15
+          }
+        },
+        {
+          "do": "assert_law",
+          "owner": 2,
+          "def": "voss.the_hearing",
+          "active": false
+        }
+      ]
+    }
+  ]
+}

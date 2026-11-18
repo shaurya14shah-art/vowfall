@@ -1,0 +1,36 @@
+{
+  "_comment": "The eighteen Roots. 'canon' Roots are the Twelve the Meridian Court teaches; the other six were struck from the Canon (docs/03_axiom_system.md). 'ops' is the whitelist of grammar operations a Root's laws may use. 'status' is honest: only Roots marked SLICE have laws in data/laws/.",
+  "families": {
+    "EXISTENCE":  {"question": "What is a thing?",            "canon_pair": ["REFLECTION", "IDENTITY"], "struck": "ABSENCE"},
+    "RELATION":   {"question": "What lies between things?",   "canon_pair": ["DEBT", "THRESHOLD"],      "struck": "OWNERSHIP"},
+    "CHANGE":     {"question": "What becomes of a thing?",    "canon_pair": ["RUIN", "CONTINUITY"],     "struck": "ADAPTATION"},
+    "PERCEPTION": {"question": "What is known of a thing?",   "canon_pair": ["SILENCE", "REVELATION"],  "struck": "MEMORY"},
+    "MOTION":     {"question": "Where is a thing going?",     "canon_pair": ["GRAVITY", "VELOCITY"],    "struck": "DISTANCE"},
+    "POTENTIAL":  {"question": "What may a thing do?",        "canon_pair": ["HUNGER", "PERMISSION"],   "struck": "POSSIBILITY"}
+  },
+  "roots": {
+    "REFLECTION":  {"family": "EXISTENCE",  "canon": true,  "status": "SLICE",    "governs": "correspondence: what one thing shares with another, now",        "ops": ["BIND", "TRANSFER", "INVERT", "REVEAL"]},
+    "IDENTITY":    {"family": "EXISTENCE",  "canon": true,  "status": "DESIGNED", "governs": "tags: what a thing counts as",                                 "ops": ["ALTER", "BIND", "PRESERVE", "REVEAL"]},
+    "ABSENCE":     {"family": "EXISTENCE",  "canon": false, "status": "DESIGNED", "governs": "eligibility: whether a thing can be acted on at all",            "ops": ["DENY", "DIVIDE", "ALTER"]},
+
+    "DEBT":        {"family": "RELATION",   "canon": true,  "status": "SLICE",    "governs": "the ledger: consequences owed and when they are paid",          "ops": ["DEFER", "TRANSFER", "ALTER", "BIND"]},
+    "THRESHOLD":   {"family": "RELATION",   "canon": true,  "status": "SLICE",    "governs": "boundaries: what may pass from one side to another",            "ops": ["DENY", "DIVIDE", "PRESERVE", "ALTER"]},
+    "OWNERSHIP":   {"family": "RELATION",   "canon": false, "status": "DESIGNED", "governs": "control: whose a thing, an act or a law is",                    "ops": ["TRANSFER", "BIND", "INVERT", "PRESERVE"]},
+
+    "RUIN":        {"family": "CHANGE",     "canon": true,  "status": "DESIGNED", "governs": "integrity: how much a guard, a construct or a law can bear",    "ops": ["ALTER", "DIVIDE", "TRANSFER"]},
+    "CONTINUITY":  {"family": "CHANGE",     "canon": true,  "status": "DESIGNED", "governs": "persistence: states that refuse to end",                         "ops": ["PRESERVE", "DEFER", "BIND"]},
+    "ADAPTATION":  {"family": "CHANGE",     "canon": false, "status": "DESIGNED", "governs": "exposure: what a thing has met before changes how it meets it", "ops": ["ALTER", "PRESERVE", "REVEAL"]},
+
+    "SILENCE":     {"family": "PERCEPTION", "canon": true,  "status": "DESIGNED", "governs": "notice: whether an act is witnessed by other laws",             "ops": ["DENY", "PRESERVE", "ALTER"]},
+    "REVELATION":  {"family": "PERCEPTION", "canon": true,  "status": "DESIGNED", "governs": "knowledge: what is read, marked and cannot be denied",          "ops": ["REVEAL", "ALTER", "BIND"]},
+    "MEMORY":      {"family": "PERCEPTION", "canon": false, "status": "DESIGNED", "governs": "the record: what happened, replayed against the present",       "ops": ["DEFER", "TRANSFER", "REVEAL", "INVERT"]},
+
+    "GRAVITY":     {"family": "MOTION",     "canon": true,  "status": "DESIGNED", "governs": "pull: what things fall toward",                                  "ops": ["ALTER", "BIND", "INVERT"]},
+    "VELOCITY":    {"family": "MOTION",     "canon": true,  "status": "DESIGNED", "governs": "momentum: speed as something kept and spent",                    "ops": ["TRANSFER", "ALTER", "DEFER"]},
+    "DISTANCE":    {"family": "MOTION",     "canon": false, "status": "DESIGNED", "governs": "the metric: how far apart two things are treated as being",     "ops": ["ALTER", "BIND", "DIVIDE", "INVERT"]},
+
+    "HUNGER":      {"family": "POTENTIAL",  "canon": true,  "status": "DESIGNED", "governs": "appetite: what is consumed and what it becomes",                "ops": ["TRANSFER", "ALTER", "DEFER"]},
+    "PERMISSION":  {"family": "POTENTIAL",  "canon": true,  "status": "SLICE",    "governs": "licence: which acts are allowed to be completed",               "ops": ["DENY", "PRESERVE", "ALTER", "REVEAL"]},
+    "POSSIBILITY": {"family": "POTENTIAL",  "canon": false, "status": "DESIGNED", "governs": "the alternative: what else could have happened",                "ops": ["DEFER", "INVERT", "PRESERVE", "REVEAL"]}
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "_comment": "Which Instrument a Root's bearer carries, what it does for the law (its verb), and what is in the hands in each form.",
+  "roots": {
+    "THRESHOLD": "lintel",
+    "DEBT": "tally",
+    "REFLECTION": "counterpart"
+  },
+  "instruments": {
+    "lintel": {
+      "name": "The Lintel",
+      "frame": "Reach",
+      "verb": "plant",
+      "verb_text": "Planted, it anchors your line. While it stands there you fight with its short half.",
+      "moveset": "res://data/instruments/lintel.json",
+      "planted_moveset": "res://data/instruments/lintel_short.json",
+      "held": {
+        "DORMANT": {
+          "right": "res://assets/models/props/lintel.glb",
+          "left": ""
+        },
+        "UNVEILED": {
+          "right": "res://assets/models/props/lintel_awakened.glb",
+          "left": ""
+        }
+      },
+      "held_planted": {
+        "right": "res://assets/models/props/lintel_short.glb",
+        "left": ""
+      },
+      "planted_model": {
+        "DORMANT": "res://assets/models/props/lintel.glb",
+        "UNVEILED": "res://assets/models/props/lintel_awakened.glb"
+      }
+    },
+    "tally": {
+      "name": "The Tally",
+      "frame": "Vessel",
+      "verb": "catch",
+      "verb_text": "A blow caught on its guard is owed to you in full, not only what got through.",
+      "moveset": "res://data/instruments/tally.json",
+      "held": {
+        "DORMANT": {
+          "right": "",
+          "left": "res://assets/models/props/tally.glb"
+        },
+        "UNVEILED": {
+          "right": "",
+          "left": "res://assets/models/props/tally_awakened.glb"
+        }
+      }
+    },
+    "counterpart": {
+      "name": "The Counterpart",
+      "frame": "Edge",
+      "verb": "show",
+      "verb_text": "A pair is bound by being shown the blade: the next two you strike.",
+      "moveset": "res://data/instruments/counterpart.json",
+      "held": {
+        "DORMANT": {
+          "right": "res://assets/models/props/counterpart.glb",
+          "left": ""
+        },
+        "UNVEILED": {
+          "right": "res://assets/models/props/counterpart.glb",
+          "left": "res://assets/models/props/counterpart_reflection.glb"
+        }
+      }
+    }
+  }
+}

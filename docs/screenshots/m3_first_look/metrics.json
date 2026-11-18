@@ -1,0 +1,32 @@
+{
+  "avg_ms": 17.79,
+  "draw_calls": 324,
+  "frames": 282,
+  "median_ms": 16.7,
+  "p99_ms": 41.53,
+  "primitives": 108996,
+  "shots": [
+    "01_lintel_carried",
+    "02_lintel_reaches",
+    "03_lintel_planted_short_half",
+    "04_planted_line_denies",
+    "05_tally_worn",
+    "06_tally_jab",
+    "07_tally_catches_owed_in_full",
+    "08_counterpart_armed",
+    "09_counterpart_shown_to_two",
+    "threshold_gatekeeper_rite",
+    "threshold_gatekeeper_unveiled",
+    "12_lintel_awakened_planted",
+    "13_walking_through_your_own_gate",
+    "reflection_answer_rite",
+    "reflection_answer_unveiled",
+    "16_counterpart_and_its_reflection",
+    "17_fourth_cut",
+    "debt_creditor_rite",
+    "debt_creditor_unveiled",
+    "20_tally_casts_its_cord",
+    "21_four_clerks_unveiled_creditor"
+  ],
+  "worst_ms": 79.7
+}
